@@ -1,0 +1,48 @@
+{% load mptt_tags viking_pages %}
+
+{% full_tree_for_model viking_pages.MenuItem as page_tree %}
+{% get_root_menuitems as root_menuitems %}
+
+{% if current_url %}
+    {% get_page_ancestor_ids current_url=current_url as page_ancestors %}
+{% elif blanc_page %}
+    {% get_page_ancestor_ids blanc_page.page as page_ancestors %}
+{% endif %}
+
+<ul id="primary_nav" class="primary">{% spaceless %}
+    {% for i in root_menuitems %}
+        <li>
+            <a class="{% if i.id in page_ancestors %}default_active active{% endif %}" href="{{ i.url }}" data-megamenugroup="{{ i.id }}"><div>{{ i.title }}</div> <div class="menu-option-toggle"></div></a>
+        </li>
+    {% endfor %}
+{% endspaceless %}</ul>
+
+<div id="megamenu">
+    {% recursetree page_tree %}
+        {% if node.level == 0 %}
+            <ul id="megamenu_group_{{ node.id }}" class="megamenu_group hide">
+                <div class="center-wrapper">
+                    {{ children }}
+                </div>
+            </ul>
+        {% else %}
+            <li>
+                {% if node.level == 1 %}
+                    <h4><a href="{{ node.url }}">{{ node.title }}</a></h4>
+                {% else %}
+                    {% if node.url %}
+                        <a class="{% if node.id in page_ancestors %}active {% endif %}{% if not node.url %}subhead{% endif %}" href="{{ node.url }}">{{ node.title }}</a>
+                    {% else %}
+                        <h4 class="subhead">{{ node.title }}</h4>
+                    {% endif %}
+                {% endif %}
+
+                {% if not node.is_leaf_node and node.level < 3 %}
+                    <ul class="children">
+                        {{ children }}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endif %}
+    {% endrecursetree %}
+</div>

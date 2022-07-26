@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load static from staticfiles %}
+
+
+{% block content %}
+<div class="content centre clear">
+    <article class="story">
+        <div class="teamprofile">
+            {% if object.image_id %}
+                {% thumbnail object.image.file "625x240" crop as thumb %}
+                <img src="{{ thumb.url }}" style="height:auto;width:100%" alt="{{ object.title }}" />
+            {% else %}
+                <img src="{% static 'img/default-news-image.jpg' %}" alt="{{ i.title }}" style="height:auto;width:100%" />
+            {% endif %}
+
+            <div class="blanc_page_blocktype_redactorblock">
+                <h2><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h2>
+                <h3><a href="{{ object.category.get_absolute_url }}">{{ object.category }}</a><br />
+                {{ object.date|date:"j M Y" }}</h3>
+
+                {{ object.content|safe }}
+            </div>
+        </div>
+    </article>
+
+    <aside class="sideblocks">
+        {% include "news/sidebar.html" %}
+    </aside>
+</div>
+{% endblock content %}

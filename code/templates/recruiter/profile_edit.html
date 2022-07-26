@@ -1,0 +1,84 @@
+{% load static from staticfiles %}<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/viking.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/recruit.css' %}" />
+
+    <style type="text/css">
+        body { padding: 0; }
+        #profiles .profile-edit { margin: 0; }
+        #profiles .timeline { float: none; width: auto; }
+    </style>
+</head>
+<body class="recruiter-body">
+
+<div id="profiles">
+    <div class="profile-edit">
+
+        <div class="profile-forms">
+            {% include "profiles/include_forms.html" %}
+        </div>
+
+    </div>
+</div>
+{% block extra_js %}
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="{% static 'js/bootstrap.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'js/bootstrap-select.js' %}"></script>
+  <script src="{% static 'js/bootstrap-tab.js' %}"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+  <script>
+  $().ready(function() {
+
+      $(".add_another").on("click", function() {
+          var prefix = $(this).data("prefix");
+          var total_forms = $("#id_" + prefix + "-TOTAL_FORMS");
+          var form_num = parseInt(total_forms.val());
+          var cloned_form = $("#empty_" + prefix).clone();
+
+          cloned_form.attr("id", "id_" + prefix + "_" + form_num);
+          cloned_form.removeClass("empty_form");
+
+          /* Replace labels */
+          $(cloned_form).find("label").each(function(index, element) {
+              element.htmlFor = element.htmlFor.replace(/__prefix__/, form_num);
+          });
+
+          /* Replace ids */
+          $(cloned_form).find("[id*='__prefix__']").each(function(index, element) {
+              element.id = element.id.replace(/__prefix__/, form_num);
+          });
+
+          /* Replace names */
+          $(cloned_form).find("[name*='__prefix__']").each(function(index, element) {
+              element.name = element.name.replace(/__prefix__/, form_num);
+          });
+
+          $(cloned_form).addClass('seperator');
+
+          cloned_form.insertBefore($(this).parent());
+
+          total_forms.attr("value", form_num + 1);
+
+          event.preventDefault();
+      });
+
+      $("#id_status").on("change", function(event) {
+          var form_data = $("#status_form").serializeArray(),
+              form_url = $("#status_form").prop("action");
+
+          jQuery.ajax({
+              url: form_url,
+              type: "POST",
+              dataType: "html",
+              data: form_data
+          });
+      });
+  });
+  </script>
+{% endblock extra_js %}
+</body>
+</html>

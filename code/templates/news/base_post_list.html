@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load thumbnail pagination_links %}
+{% load static from staticfiles %}
+
+
+{% block nav %}
+{% include "includes/nav.html" with current_url='blanc_basic_news:post-list-frontpage' only %}
+{% endblock nav %}
+
+
+{% block content %}
+<div class="content news-main">
+    <h3>{% block list_title %}News{% endblock %}</h3>
+
+    <div class="set">
+        <aside class="related equal">
+            <ul class="news">
+                {% for i in object_list|slice:":5" %}
+                    <li class="post">
+                        <a href="{{ i.get_absolute_url }}">
+                            {% if i.image_id %}
+                                {% thumbnail i.image.file "122x79" crop as thumb %}
+                                <img src="{{ thumb.url }}" alt="{{ i.title }}" width="{{ thumb.width }}" height="{{ thumb.height }}" />
+                            {% else %}
+                                <img src="{% static 'img/default-news-image.jpg' %}" alt="{{ i.title }}" style="width:122px;height:79px"/>
+                            {% endif %}
+
+                            {{ i.title }}
+
+                            {% if i.teaser %}
+                                {{ i.teaser|linebreaks }}
+                            {% else %}
+                                {{ i.content|striptags|truncatewords_html:15 }}
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </aside>
+        <aside class="related second equal">
+            <ul class="news">
+                {% for i in object_list|slice:"5:" %}
+                    <li class="post">
+                        <a href="{{ i.get_absolute_url }}">
+                            {% if i.image_id %}
+                                {% thumbnail i.image.file "122x79" crop as thumb %}
+                                <img src="{{ thumb.url }}" alt="{{ i.title }}" width="{{ thumb.width }}" height="{{ thumb.height }}" />
+                            {% else %}
+                                <img src="{% static 'img/default-news-image.jpg' %}" alt="{{ i.title }}" style="width:122px;height:79px"/>
+                            {% endif %}
+
+                            {{ i.title }}
+
+                            {% if i.teaser %}
+                                {{ i.teaser|linebreaks }}
+                            {% else %}
+                                {{ i.content|striptags|safe|truncatewords_html:15 }}
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </aside>
+    </div>
+
+    {% if is_paginated %}
+        {% get_pagination_links paginator page_obj as pagination_links %}
+
+        <div class="pagination">
+            Page
+
+            {% for page_num in pagination_links %}
+                {% if page_num.is_filler %}
+                    &hellip;
+                {% else %}
+                    <a href="?page={{ page_num.number }}"{% if page_num.is_current %} class="active"{% endif %}>{{ page_num.number }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a class="next more" href="?page={{ page_obj.next_page_number }}">Next</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+</div>
+{% endblock content %}

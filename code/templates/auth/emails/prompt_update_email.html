@@ -1,0 +1,22 @@
+{% extends "base_email.html" %}
+
+
+{% block title %}REGISTRATION{% endblock %}
+
+
+{% block content %}
+    <p>Hello {{ user.full_name }},</p>
+
+    {% if period == 'year' %}
+        {% include 'auth/emails/includes/prompt_update_year.html' %}
+    {% elif period == 'three months' %}
+        {% include 'auth/emails/includes/prompt_update_three_months.html' %}
+    {% else %}
+        {% include 'auth/emails/includes/prompt_update_week.html' %}
+    {% endif %}
+
+    <p>Kinds regards,</p>
+
+    <p>The Recruitment Team</p>
+{% endblock content %}
+ 

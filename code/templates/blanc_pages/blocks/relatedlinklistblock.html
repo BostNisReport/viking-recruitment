@@ -1,0 +1,6 @@
+<div class="{{ css_classes }}">
+    <h3>Related links</h3>
+    {% for i in object.relatedlink_set.all %}
+        <a class="more" href="{{ i.url }}">{{ i.title }}</a>
+    {% endfor %}
+</div>

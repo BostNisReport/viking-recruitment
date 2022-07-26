@@ -1,0 +1,78 @@
+{% extends "base_recruitment.html" %}
+{% load form_utils %}
+{% load static from staticfiles %}
+
+
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap-responsive.css' %}" />
+{% endblock extra_styles %}
+
+{% block breadcrumb %}
+  &gt;<a href="{% url 'profiles:profile-edit-home' %}">Edit Profile</a>
+{% endblock %}
+
+{% block profile_active %}active{% endblock %}
+
+{% block content %}
+<div class="profile-edit">
+    <div class="profile-forms">
+        {% include "profiles/include_forms.html" %}
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block endbody %}
+<script>
+$().ready(function() {
+    $(".add_another").on("click", function() {
+        var prefix = $(this).data("prefix"),
+            total_forms = $("#id_" + prefix + "-TOTAL_FORMS"),
+            form_num = parseInt(total_forms.val()),
+            cloned_form = $("#empty_" + prefix).clone();
+
+        cloned_form.attr("id", "id_" + prefix + "_" + form_num);
+        cloned_form.removeClass("empty_form");
+
+        /* Replace labels */
+        $(cloned_form).find("label").each(function(index, element) {
+            element.htmlFor = element.htmlFor.replace(/__prefix__/, form_num);
+        });
+
+        /* Replace ids */
+        $(cloned_form).find("[id*='__prefix__']").each(function(index, element) {
+            element.id = element.id.replace(/__prefix__/, form_num);
+        });
+
+        /* Replace names */
+        $(cloned_form).find("[name*='__prefix__']").each(function(index, element) {
+            element.name = element.name.replace(/__prefix__/, form_num);
+        });
+        $(cloned_form).addClass('seperator');
+
+        cloned_form.insertBefore($(this).parent().parent());
+
+        total_forms.attr("value", form_num + 1);
+
+        // Call datepicker to inialize it.
+        $(".datepicker").datepicker({
+            format: "dd-mm-yyyy"
+        });
+
+        event.preventDefault();
+    });
+
+    $("#id_status").on("change", function(event) {
+        var form_data = $("#status_form").serializeArray(),
+            form_url = $("#status_form").prop("action");
+
+        jQuery.ajax({
+            url: form_url,
+            type: "POST",
+            dataType: "html",
+            data: form_data
+        });
+    });
+});
+</script>
+{% endblock endbody %}

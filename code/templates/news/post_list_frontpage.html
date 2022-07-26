@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+
+{% block nav %}
+{% include "includes/nav.html" with current_url='blanc_basic_news:post-list-frontpage' only %}
+{% endblock nav %}
+
+
+{% block content %}
+<div class="content news-main">
+    {% include "news/frontpage_category.html" with title="Latest Viking News" category="viking-news" only %}
+    {% include "news/frontpage_category.html" with title="Other News" category="other-news" only %}
+
+    {% include "news/upcoming_events.html" %}
+</div>
+{% endblock content %}

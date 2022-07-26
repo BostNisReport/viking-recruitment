@@ -1,0 +1,207 @@
+{% load static from staticfiles %}{% load viking_pages jobsatsea_tags %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block starthead %}{% endblock %}
+    <title>{% block title %}Viking Recruitment{% endblock %}</title>
+    <link href='http://fonts.googleapis.com/css?family=Signika:400,700' rel='stylesheet' type='text/css'>
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'css/bootstrap-select.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'css/datepicker.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'css/viking-bootstrap.css' %}" rel="stylesheet" media="screen">
+
+    {% block extra_styles %}
+    {% endblock extra_styles %}
+
+    <!--[if lt IE 9]>
+        <script src="{% static 'js/html5shiv.js' %}"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="{% static 'css/viking.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/bootstrap-select.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/jquery.carouFredSel-6.2.1-packed.js' %}"></script>
+    <script>
+        $().ready(function() {
+            $("#latestjobs").carouFredSel({
+                circular: false,
+                infinite: false,
+                auto: false,
+                scroll: {
+                    items: 4
+                },
+                prev: {
+                    button: "#latestjobs_prev"
+                },
+                next: {
+                    button: "#latestjobs_next"
+                },
+                pagination: "#latestjobs_pips"
+            }, {
+                wrapper: "parent"
+            });
+        });
+    </script>
+
+    {% block analytics %}
+    {% if request.get_host == "www.vikingrecruitment.com" %}
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-9958264-1']);
+            _gaq.push(['_trackPageview']);
+            _gaq.push(['b._setAccount', 'UA-44709215-1']);
+            _gaq.push(['b._trackPageview']);
+
+            (function() {
+               var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+               ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    {% endif %}
+    {% endblock analytics %}
+
+    {% block endhead %}{% endblock %}
+</head>
+<body id="profiles">
+{% block startbody %}{% endblock %}
+<div class="main">
+    <div class="centre clear">
+        {% if not user.is_authenticated %}
+            <div id="pulldown" class="pulldown" style="display:none">
+                <form class="loginform" method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <h3>Login</h3>
+                    <p><label for="id_login_username">Email</label><input id="id_login_username" type="text" name="username" /></p>
+                    <p><label for="id_login_password">Password</label><input id="id_login_password" type="password" name="password" /></p>
+                    <button type="submit">login</button>
+                    <hr />
+                    <a href="{% url 'password_reset' %}">Forgotten your password?</a>
+                </form>
+                <form class="registerform" method="POST" action="{% url 'registration_register' %}">
+                    {% csrf_token %}
+                    <h3>Register</h3>
+                    <fieldset class="set">
+                        <p><label for="id_register_first_name">First name</label><input id="id_register_first_name" type="text" name="first_name" /></p>
+                        <p><label for="id_register_last_name">Last name</label><input id="id_register_last_name" type="text" name="last_name" /></p>
+                    </fieldset>
+                    <fieldset class="set">
+                        <p><label for="id_register_email">Email</label><input id="id_register_email" type="text" name="email" /></p>
+                        <p><label for="id_register_password1">Password</label><input id="id_register_password1" type="password" name="password1" /></p>
+                    </fieldset>
+                    <button type="submit">register</button>
+                </form>
+            </div>
+        {% endif %}
+        <div class="login">
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" id="toggle-pulldown">Login/Register</a>
+            {% endif %}
+            {% get_header_links as header_links %}
+            {% if header_links %}
+                |
+                {% for i in header_links %}
+                     <a href="{{ i.link }}">{{ i.title }}</a> {% if not forloop.last %}|{% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <header class="brand">
+            <h1><a href="/">Viking <span>we place people first</span></a></h1>
+                <nav id="meganav">
+                    <a href="#" class="menutoggle">Navigation</a>
+                    <ul id="primary_nav" class="primary">{% spaceless %}
+                        <li><a href="{% url 'profiles:dashboard' %}" class="{% block dashboard_active %}{% endblock %}">Dashboard</a></li>
+                        <li><a href="{% url 'profiles:profile-home' %}" class="{% block profile_active %}{% endblock %}">Profile</a></li>
+                        <li><a href="{% url 'profiles_jos:home' %}" class="{% block jobs_active %}{% endblock %}">Jobs</a></li>
+                    {% endspaceless %}</ul>
+                </nav>
+                <p class="breadcrumbs"><a href="/">Home</a> > <a href="{% url 'profiles:dashboard' %}">Candidate Dashboard</a> {% block breadcrumb %}{% endblock %}</p>
+        </header>
+
+        <div class="profile">
+        {% block content %}{% endblock %}
+        </div>
+
+        <div class="latestjobs clear">
+            <h3>Latest Jobs</h3>
+            <div id="latestjobs_pips" class="tabs"></div>
+            <a href="#" id="latestjobs_prev" class="prev">Previous</a>
+            <a href="#" id="latestjobs_next" class="next">Next</a>
+            <div class="latestjobs_wrapper">
+                <ul id="latestjobs" class="jobs" style="width:872px;">
+                    {% get_latest_jobs as latest_jobs %}
+                    {% for i in latest_jobs %}
+                        <li class="job">
+                            <span class="when">{{ i.created|date:"M" }}<span class="day">{{ i.created|date:"d" }}</span></span>
+                            <h4>{{ i.rank }}</h4>
+                            <h6>{{ i.id }}</h6>
+                            <p>{{ i.description_text|safe|truncatewords:15 }}</p>
+                            <a href="{{ i.get_absolute_url }}">&gt; More</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="footer clear">
+    <div class="centre">
+        <h3>Did you know?</h3>
+        {% get_footer_images 4 as footer_images %}
+
+        {% for i in footer_images %}
+            <a href="{{ i.link }}" class="banner image {% if forloop.last %}last{% endif %}" style="background-image: url({{ i.image.url }})">
+                <h4 class="alt {{ i.header_colour }}">{{ i.coloured_header|linebreaksbr }}</h4>
+                <h4>{{ i.plain_header|linebreaksbr }}</h4>
+                <small>{{ i.subheader }}</small>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="legal">
+    <div class="wrapper">
+        <div class="altlinks clear">
+            <div class="centre">
+                <div class="affiliates">
+                    <div class="affiliates-holder">
+                        <a class="f0" href="http://www.dft.gov.uk/mca/">MCA</a>
+                        <a class="f1" href="http://www.pya.org/latestnews">PYA</a>
+                        <a class="f2" href="http://www.rec.uk.com/home">REC</a>
+                        <a class="f3" href="http://www.lrqa.co.uk/">LRQA</a>
+                        <a class="f4" href="http://www.iata.org/">IATA</a>
+                        <a class="f5" href="http://www.superyachtsociety.org/">SuperYacht Society</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% get_footer_links as footer_links %}
+        <p>
+            {% for i in footer_links %}
+                <a href="{{ i.link }}">{{ i.title }}</a> {% if not forloop.last %}|{% endif %}
+            {% endfor %}
+        </p>
+
+        <div class="social_bar">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={% filter urlencode:"" %}http://{{ request.get_host }}{% endfilter %}" class="facebook-icon icon" target="_blank"></a>
+            <a href="https://twitter.com/share?related=VikingRec&amp;url={% filter urlencode:"" %}http://{{ request.get_host }}{% endfilter %}" class="twitter-icon icon" target="_blank"></a>
+            <a href="https://www.linkedin.com/shareArticle?u={% filter urlencode:"" %}http://{{ request.get_host }}{% endfilter %}" class="linkedin-icon icon" target="_blank"></a>
+            <a href="mailto:?body=tisbody&amp;subject={% filter urlencode:"" %}http://{{ request.get_host }}{% endfilter %}" class="email-icon icon" target="_blank"></a>
+        </div>
+
+    </div>
+</div>
+
+{% block endbody %}{% endblock %}
+{% block endpage %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,7 @@
+{% load viking_events thumbnail %}
+
+{% get_upcoming_viking_events 6 as upcoming_events %}
+{% include "news/upcoming_event_list.html" with event_list=upcoming_events %}
+
+{% get_upcoming_viking_come_and_see_events 6 as come_and_see_events %}
+{% include "news/upcoming_event_list.html" with event_list=come_and_see_events events_title="Come and see us at..." %}

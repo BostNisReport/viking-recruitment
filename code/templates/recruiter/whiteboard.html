@@ -1,0 +1,34 @@
+{% extends 'recruiter/base_recruiter.html' %}
+
+{% block content %}
+<div class="job-list">
+    <div class="results">
+        {% for vessel in object_list %}
+            <h2>{{ vessel }}{% if vessel.company %} - {{ vessel.company }}{% endif %}</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>ID</th>
+                        <th>Department</th>
+                        <th>Sector</th>
+                        <th>Rank</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in vessel.job_set.all %}
+                        <tr>
+                            <td>{{ i.get_job_status_display }}</td>
+                            <td><a href="{% url 'recruiter:job-workflow' pk=i.id %}">{{ i.id }}</a></td>
+                            <td>{{ i.department }}</td>
+                            <td>{{ i.job_sector }}</td>
+                            <td>{{ i.rank }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

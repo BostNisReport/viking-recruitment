@@ -1,0 +1,144 @@
+{% extends "base_email.html" %}
+
+
+{% block title %}
+    {% if job %}
+        JOB DETAILS
+    {% else %}
+        NEW MESSAGE
+    {% endif %}
+{% endblock title %}
+
+
+{% block side %}
+    {% if job %}
+        <tr>
+            <td style="font:bold 10px/12px Arial, Helvetica, sans-serif; color:#f3862b; padding:0 0 1px;">
+                RANK POSITION:
+            </td>
+        </tr>
+        <tr>
+            <td style="font:13px/15px Arial, Helvetica, sans-serif; color:#fff;">
+                {{ job.rank }}
+            </td>
+        </tr>
+        <tr>
+            <td height="7" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff" height="1" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="8" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="font:bold 10px/12px Arial, Helvetica, sans-serif; color:#f3862b; padding:0 0 1px;">
+                VESSEL TYPE OR OPERATION:
+            </td>
+        </tr>
+        <tr>
+            <td style="font:13px/15px Arial, Helvetica, sans-serif; color:#fff;">
+                {{ job.sector }}
+            </td>
+        </tr>
+        <tr>
+            <td height="8" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+
+        {% if False %}
+            <tr>
+                <td bgcolor="#ffffff" height="1" style="font-size:0; line-height:0;">&nbsp;</td>
+            </tr>
+            <tr>
+                <td height="8" style="font-size:0; line-height:0;">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="font:bold 10px/12px Arial, Helvetica, sans-serif; color:#f3862b; padding:0 0 2px;">
+                    CERTIFICATION &amp; EXPERIENCE:
+                </td>
+            </tr>
+            <tr>
+                <td style="font:13px/15px Arial, Helvetica, sans-serif; color:#fff;">
+                    {% if job.certification %}
+                        {{ job.certification }}
+                        <br />
+                    {% endif %}
+                    {% if job.experience_required %}
+                        {{ job.experience_required }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td height="7" style="font-size:0; line-height:0;">&nbsp;</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td bgcolor="#ffffff" height="1" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="8" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="font:bold 10px/12px Arial, Helvetica, sans-serif; color:#f3862b; padding:0 0 1px;">
+                JOB TYPE:
+            </td>
+        </tr>
+        <tr>
+            <td style="font:13px/15px Arial, Helvetica, sans-serif; color:#fff;">
+                {{ job.get_job_type_display }}
+            </td>
+        </tr>
+        <tr>
+            <td height="7" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff" height="1" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="8" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="font:bold 10px/12px Arial, Helvetica, sans-serif; color:#f3862b; padding:0 0 1px;">
+                SAILIING AREA:
+            </td>
+        </tr>
+        <tr>
+            <td style="font:13px/15px Arial, Helvetica, sans-serif; color:#fff;">
+                {{ job.location }}
+            </td>
+        </tr>
+        <tr>
+            <td height="7" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff" height="1" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="8" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="font:bold 10px/12px Arial, Helvetica, sans-serif; color:#f3862b; padding:0 0 1px;">
+                JOB NUMBER:
+            </td>
+        </tr>
+        <tr>
+            <td style="font:13px/15px Arial, Helvetica, sans-serif; color:#fff;">
+                {{ job.id }}
+            </td>
+        </tr>
+        <tr>
+            <td height="7" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff" height="1" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="8" style="font-size:0; line-height:0;">&nbsp;</td>
+        </tr>
+    {% endif %}
+{% endblock side %}
+
+
+{% block content %}
+    {{ message|linebreaksbr }}
+{% endblock content %}

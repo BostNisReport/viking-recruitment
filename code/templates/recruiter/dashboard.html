@@ -1,0 +1,146 @@
+{% extends 'recruiter/base_recruiter.html' %}
+
+{% load pagination_links %}
+{% load humanize %}
+{% load recruiter_tags %}
+
+
+{% block content %}
+<div id="recruit-dashboard">
+    <h2>Recruiter Dashboard</h2>
+    <ul class="tabs">
+        <li><a href="{% url 'recruiter:dashboard' %}" class="{% if not active_jobsector %}active{% endif %}">All</a></li>
+        {% for i in jobsector_list %}
+            <li><a href="{% url 'recruiter:dashboard-sector' sector_slug=i.slug %}" class="{% if i == active_jobsector %}active{% endif %}">{{ i }}</a></li>
+        {% endfor %}
+    </ul>
+    <div class="job-stages">
+        {% for stage_name, stage_job_list in stage_jobs.iteritems %}
+            <div class="stage">
+                <h4>{{ stage_name }}</h4>
+                <ul>
+                {% for i in stage_job_list %}
+                    <li><a href="{% url 'recruiter:job-workflow' pk=i.pk %}">{{ i }}
+                        <span class="total">[{{ i.stage_candidates.count }}]</span>
+                        <span class="client">{{ i.company }}</span>
+                        <span class="position">{{ i.rank }} - {{ i.department }}</span>
+                        <span class="created">Created: {{ i.created|naturaltime }}</span>
+                        <span class="due">Due: {{ i.required_by|naturaltime }}</span>
+                    </a></li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="results" id="timeline">
+        <h2>Timeline Activity Log</h2>
+
+        <div class="inset">
+            <ul class="tabs">
+                <li><a href="?#timeline" class="{% if not message_type_active %}active{% endif %}">All</a></li>
+                {% for message_id, message_name in message_choices %}
+                  <li>
+                    <a href="?messages={{ message_id }}#timeline"
+                    class="{% if message_type_active == message_id %}active{% endif %}">
+                      {{ message_name }}
+                    </a>
+                  </li>
+                {% endfor %}
+            </ul>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>User/Job</td>
+                        <td>Latest position</td>
+                        <td>Type</td>
+                        <td>Message</td>
+                        <td>Date</td>
+                    </tr>
+                </thead>
+                {% for i in page_obj.object_list %}
+                  <tr class="{% cycle 'odd' 'even' %} ">
+                    <td>
+                      {% display_replies i recruiter.id %}
+                      {% if i.user %}
+                          <a href="#" type="button" data-toggle="modal"
+                          data-target="#recruit-view-profile"
+                          data-iframeurl="{% url 'recruiter:profile-edit-home-readonly' pk=i.user.pk %}">
+                            {{ i.user.get_full_name }}
+                          </a>
+                      {% elif i.job %}
+                        <a href="{% url 'recruiter:job-workflow' pk=i.job.pk %}">{{ i.job }}</a>
+                      {% endif %}
+
+                    </td>
+                    <td>{{ i.user.latest_position|default:"N/A" }}</td>
+                    <td>{{ i.get_message_type_display }}</td>
+                    <td>{{ i.message|linebreaksbr }}</td>
+                    <td class="muted text-right">{{ i.date|date:"d/m/y" }}</td>
+                  </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        {% if page_obj.has_other_pages %}
+            {% get_pagination_links paginator page_obj as pagination_links %}
+
+            <div class="pagination pagination-centered">
+                <ul>
+                    {% if page_obj.has_previous %}
+                        <li><a href="?{{ search_params }}&amp;page={{ page_obj.previous_page_number }}#timeline">Prev</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#timeline">Prev</a></li>
+                    {% endif %}
+
+                    {% for page_num in pagination_links %}
+                        {% if page_num.is_filler %}
+                            <li class="disabled"><a href="#">&hellip;</a></li>
+                        {% else %}
+                            <li{% if page_num.is_current %} class="active"{% endif %}>
+                                <a href="?{{ search_params }}&amp;page={{ page_num.number }}#timeline">{{ page_num.number }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li><a href="?{{ search_params }}&amp;page={{ page_obj.next_page_number }}#timeline">Next</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#timeline">Next</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock content %}
+
+{% block endpage %}
+<div id="recruit-view-profile" class="modal-recruit-view hide fade" tabindex="-1" role="dialog" aria-labelledby="recruit-view-profile-label" aria-hidden="true">
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="recruit-view-profile-label">Candidate Detail</h3>
+    </div>
+    <div class="modal-body-candidate">
+        <iframe width="915" height="400" style="border:none"></iframe>
+    </div>
+</div>
+
+<script>
+$().ready(function() {
+
+    $("#recruit-view-profile").on("show", function() {
+        var modal = $(this).data("modal"),
+            iframe_url = modal.options.iframeurl,
+            iframe = modal.$element.find("iframe");
+
+        iframe.prop("src", iframe_url);
+    });
+
+    $("#recruit-view-profile").on("hidden", function() {
+        $(this).data("modal").$element.removeData();
+    });
+
+});
+</script>
+{% endblock %}

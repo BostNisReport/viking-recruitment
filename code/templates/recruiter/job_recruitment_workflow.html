@@ -1,0 +1,392 @@
+{% extends 'recruiter/base_recruiter.html' %}
+{% load humanize form_utils staticfiles %}
+
+{% block endhead %}
+  {% include "recruiter/includes/horizontal_filter.html" %}
+{% endblock endhead %}
+
+{% block content %}
+
+  <!-- Modal -->
+  <div class="modal fade hide" id="save-search-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" class='search-preferences-form'>
+          {% csrf_token %}
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Save search preferences</h4>
+          </div>
+          <div class="modal-body">
+            {% for field in search_preference_form %}
+              <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                <span class="help-block"></span>
+              </div>
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary save-preference">Save changes</button>
+
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Button trigger modal -->
+  <div id="recruit-workflow">
+      <div class="recruit-section">
+          <a class="editlink" href="{% url 'recruiter:job-update' pk=object.pk %}">Edit</a>
+          <h2>Job #{{ object.id }} Details</h2>
+          <div class="frame">
+              <form id="status_form" method="POST" action="?action=status">
+                  {% csrf_token %}
+                  {{ status_form.job_status }}
+              </form>
+
+              <h3>{{ object.rank }} / {{ object.department }} // {{ object.sector }}</h3>
+              <div class="descr">
+                  <p>{{ object.description|safe }}</p>
+
+                  <h4>Attachments</h4>
+
+                  {% if object.jobattachment_set.all %}
+                      <ul>
+                          {% for i in object.jobattachment_set.all %}
+                              <li><a href="{{ i.file.url }}">File #{{ forloop.counter }}</a></li>
+                          {% endfor %}
+                      </ul>
+                  {% endif %}
+              </div>
+              <dl>
+                  <dt>Positions Available</dt><dd>{{ object.positions_available }}</dd>
+                  <dt>Salary</dt><dd>&nbsp;{{ object.get_currency_display }} {{ object.salary|intcomma }} ({{ object.currency }})</dd>
+                  <dt>Paid on leave</dt><dd>&nbsp;{% if object.paid_on_leave %}Yes{% else %}No{% endif %}</dd>
+                  <dt>Length of Assignment</dt><dd>&nbsp;{{ object.length_of_visit }}</dd>
+                  <dt>Job Type</dt><dd>&nbsp;{{ object.get_job_type_display }}</dd>
+                  <dt>Created</dt><dd>&nbsp;{{ object.created }}{# by XXXX #}</dd>
+                  <dt>Closes</dt><dd>&nbsp;{{ object.closes }}</dd>
+                  <dt>Required by</dt><dd>&nbsp;{{ object.required_by }}</dd>
+                  <dt>Show on Jobs at Sea</dt><dd>{{ object.jobs_at_sea|yesno:"Yes,No" }}</dd>
+                  <dt>Standard terms</dt><dd>{{ object.standard_terms_of_business|yesno:"Yes,No" }}</dd>
+                  <dt>Bespoke terms</dt><dd>{{ object.bespoke_terms_of_business|yesno:"Yes,No" }}</dd>
+              </dl>
+              <div class="other">
+                  <h3>Other details</h3>
+                  <dl class="left">
+                      <dt>Location</dt><dd>&nbsp;{{ object.location }}</dd>
+                      <dt>Certification</dt><dd>{{ object.certification }}</dd>
+                      <dt>Experience Required</dt><dd>{{ object.experience_required|default:"-" }}</dd>
+                      <dt>ISM</dt><dd>{{ object.ism }}</dd>
+                      <dt>Classification Society</dt><dd>{{ object.classification_society }}</dd>
+                  </dl>
+                  <dl class="right">
+                      <dt>Company</dt><dd>{{ object.company }}</dd>
+                      <dt>Vessel</dt><dd>{{ object.vessel|default:"-" }}</dd>
+                      <dt>Contact Name</dt><dd><a href="mailto:{{ object.contact_email_1 }}">{{ object.contact_name }}</a></dd>
+                      <dt>Contact Phone</dt><dd>{{ object.contact_telephone_1|default:"-" }} {% if object.contact_telephone_2 %}/ {{ object.contact_telephone_2 }}{% endif %}</dd>
+                      {# <dt>Client access</dt><dd>XXXX</dd> #}
+                  </dl>
+              </div>
+          </div>
+      </div>
+
+      <div class="recruit-notes">
+          <h2>Job #{{ object.id }} Notes</h2>
+          <div class="frame">
+              <form method="POST" action="?action=note">
+                  {% csrf_token %}
+
+                  {{ note_form.as_p }}
+
+                  <button type="submit">Add note</button>
+              </form>
+              <ul class="notes">
+              {% for i in notes %}
+                  <li class="note">
+                      {{ i.message|linebreaks }}
+                      <span>{{ i.date }}, {{ i.user.get_full_name }}</span>
+                  </li>
+              {% endfor %}
+              </ul>
+          </div>
+      </div>
+
+      <div class="recruit-search">
+          <h2>Candidate Search</h2>
+          <ul class="tabs">
+              <li>
+                  <a href="#" id="search_tab_first" data-toggle="tab"
+                      data-target="#candidate_search fieldset:eq(0)">
+                      General
+                  </a>
+              </li>
+              <li>
+                  <a href="#" data-toggle="tab"
+                      data-target="#candidate_search fieldset:eq(1)">
+                      Employment
+                  </a>
+              </li>
+              <li>
+                  <a href="#" data-toggle="tab"
+                      data-target="#candidate_search fieldset:eq(2)">
+                      Education &amp; Certification
+                  </a>
+              </li>
+              <li>
+                  <a href="#" data-toggle="tab"
+                      data-target="#candidate_search fieldset:eq(3)">
+                      Travel
+                  </a>
+              </li>
+          </ul>
+          <form method="POST" action="?action=search#search_results" id="candidate_search">
+              {% csrf_token %}
+
+              <div class="form-wrapper">
+                {{ search_form|render }}
+              </div>
+
+              <button class="candidate-search" type="submit">Search</button>
+              <button class="save-search">Save search</button>
+
+              <select name="search-preferences" class='select-preference'>
+                <option class="default-preference" selected> -- Select preference -- </option>
+                {% for preference in search_preferences %}
+                  <option value="{{ preference.id }}">{{ preference.name }}</option>
+                {% endfor %}
+              </select>
+              <button class="delete-preference" disabled="disabled">
+                Delete preference
+              </button>
+
+
+          </form>
+      </div>
+
+      <div id="search_wrap">
+          <div id="search_results" class="recruit-results">
+              <h2>Search Results</h2>
+              <div class="results">
+                  <ul class="tabs">
+                      <li class="{% if search_results %}active{% endif %}">
+                          <a href="#search_result_list" data-toggle="tab">
+                              Search
+                          </a>
+                      </li>
+                      <li class="{% if not search_results %}active{% endif %}"><a href="#candidate_application_list" data-toggle="tab">Applicants</a></li>
+                  </ul>
+                  <div id="search_result_list" class="{% if search_results %}active{% endif %}">
+                      {% if search_results %}
+                        <ul class="candidate-results">
+
+                          {% if search_count > 200 %}
+                              <li>
+                                  Too many search results ({{ search_count|intcomma }}), only showing 200 results.
+                              </li>
+                          {% endif %}
+
+                          {% for user in search_results %}
+                              {% include "recruiter/includes/search_list.html" %}
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                  </div>
+                  <div id="candidate_application_list" class="{% if not search_results %}active{% endif %}">
+                      {% for application in job_applications %}
+                          {% include "recruiter/includes/search_list.html" with application=application user=application.user%}
+                      {% endfor %}
+                  </div>
+              </div>
+
+              <div id="candidate_stages_wrap">
+                  <div id="candidate_stages">
+                      {% for stage_name, candidate_qs in stage_candidates.iteritems %}
+                          <div class="stage stage-{{ forloop.counter }}">
+                              <h4>{{ stage_name }}
+                                  <a href="#" class="message-stage" type="button" data-toggle="modal"
+                                      data-target="#recruit-message"
+                                      data-stage="{{ forloop.counter }}">Message</a>
+                              </h4>
+                              <ul id="candidates_stage_{{ forloop.counter }}">
+                                  {% for i in candidate_qs %}
+                                      <li class="{% if i.stage == forloop.parentloop.counter and not i.finished %}candidate-active{% endif %}" data-candidateid="{{ i.id }}">
+                                          {% if i.user.profile_featured %}&#10025;{% endif %}
+                                          <small>
+                                              <a href="#" type="button" data-toggle="modal" data-target="#recruit-view-profile" data-iframeurl="{% url 'recruiter:profile-edit-home-readonly' pk=i.user.pk %}">
+                                                  <strong style="{% if i.stage == forloop.parentloop.counter and i.finished %}color: red;{% elif i.stage > forloop.parentloop.counter %}color: green;{% endif %}">{{ i.user.get_full_name }}</strong></a><br />
+                                              {% if i.user.date_of_birth %}{{ i.user.date_of_birth }}<br />{% endif %}
+                                              {% if i.user.nationality %}{{ i.user.get_nationality_display }}<br />{% endif %}
+                                              {{ i.user.get_status_display }}<br />
+                                              Profile {{ i.user.profile_complete }}%<br />
+                                          </small>
+
+                                          {% if i.stage == forloop.parentloop.counter %}
+                                              {% if i.finished %}
+                                                  <form method="POST" action="{% url 'recruiter:job-workflow-candidate-readd' pk=i.pk %}" class="candidate_update">
+                                                      {% csrf_token %}
+                                                      <button type="submit" class="blue">+</button>
+                                                  </form>
+                                              {% else %}
+                                                  <form method="POST" action="{% url 'recruiter:job-workflow-candidate-update' pk=i.pk %}" class="candidate_update">
+                                                      {% csrf_token %}
+                                                      <input type="hidden" name="candidate" value="{{ i.id }}">
+                                                      <input type="hidden" name="stage" value="{{ i.next_stage }}">
+                                                      <button type="submit" class="green">&gt;</button>
+                                                  </form>
+                                                  <form method="POST" action="{% url 'recruiter:job-workflow-candidate-finished' pk=i.pk %}" class="candidate_update">
+                                                      {% csrf_token %}
+                                                      <button type="submit" class="red">X</button>
+                                                  </form>
+                                                  <form method="POST" action="{% url 'recruiter:job-workflow-candidate-update' pk=i.pk %}" class="candidate_update">
+                                                      {% csrf_token %}
+                                                      <input type="hidden" name="candidate" value="{{ i.id }}">
+                                                      <input type="hidden" name="stage" value="{{ i.prev_stage }}">
+                                                      <button type="submit" class="green">&lt;</button>
+                                                  </form>
+                                              {% endif %}
+                                          {% endif %}
+                                      </li>
+
+                                  {% endfor %}
+                              </ul>
+                          </div>
+                      {% endfor %}
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div id="chosen_candidates_wrap">
+          <div id="chosen_candidates" class="recruit-final">
+              <a href="#" class="more message-stage" type="button" data-toggle="modal" data-target="#recruit-message" data-stage="4">Message</a>
+              <h2>Chosen Candidates</h2>
+
+              <div id="candidates_stage_4" class="winners">
+                  {% for i in chosen_candidates %}
+                      <div class="winner {% if i.finished %}candidate-finished{% else %}candidate-active{% endif %}" data-candidateid="{{ i.id }}">
+                          {% include "profiles/include_sidebar.html" with profile=i.user results=True %}
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+      </div>
+  </div>
+{% endblock content %}
+
+{% block endpage %}
+<div id="recruit-message" class="modal-recruit-view hide fade-recruit" tabindex="-1" role="dialog" aria-labelledby="recruit-message-label" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="recruit-message-label">Send message</h3>
+    </div>
+    <form method="POST" action="?action=message">
+        {% csrf_token %}
+        <div class="modal-body-candidate">
+            {{ candidate_message_form|render }}
+            <button class="btn btn-primary">Send</button>
+        </div>
+    </form>
+</div>
+
+<div id="recruit-view-profile" class="modal-recruit-view hide fade-recruit" tabindex="-1" role="dialog" aria-labelledby="recruit-view-profile-label" aria-hidden="true">
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="recruit-view-profile-label">Candidate Detail</h3>
+    </div>
+    <div class="modal-body-candidate">
+        <iframe width="915" height="400" style="border:none"></iframe>
+    </div>
+</div>
+
+<script>
+  var SAVE_SEARCH_URL = '{% url "searches:save-preferences" %}';
+  var GET_PREFERENCE_URL = '{% url "searches:get-preferences" %}';
+  var DELETE_PREFERENCE_URL = '{% url "searches:delete-preferences" %}';
+</script>
+
+<script type="text/javascript" src="{% static "js/recruiter/recruiter.js" %}"></script>
+
+<script>
+$().ready(function() {
+    $("#search_tab_first").tab("show");
+
+    var search_wrap = $("#search_wrap"),
+        chosen_candidates_wrap = $("#chosen_candidates_wrap");
+
+
+    $(document).on('submit', "#candidate_search", function(event) {
+        event.preventDefault();
+
+        var form_data = $(this).serializeArray(),
+            form_url = $(this).prop("action") + " #search_results";
+
+        search_wrap.load(form_url, form_data);
+    });
+
+    var candidate_update = function(event) {
+        event.preventDefault();
+
+        if ($(this).hasClass("search_add")) {
+            $(this).find("button").prop("disabled", true);
+        }
+
+        var form_data = $(this).serializeArray(),
+            form_url = $(this).prop("action");
+
+        jQuery.ajax({
+            url: form_url,
+            type: "POST",
+            dataType: "html",
+            data: form_data
+        }).done(function(responseText) {
+            var candidate_html = jQuery("<div>").append(jQuery.parseHTML(responseText));
+            $("#candidate_stages_wrap").html(candidate_html.find("#candidate_stages"));
+            chosen_candidates_wrap.html(candidate_html.find("#chosen_candidates"));
+        });
+    };
+
+    search_wrap.on("submit", ".candidate_update", candidate_update);
+    chosen_candidates_wrap.on("submit", ".candidate_update", candidate_update);
+
+    $(".message-stage").on("click", function() {
+        var stage = $(this).data("stage"),
+            candidates_stage = $("#candidates_stage_" + stage).find(".candidate-active"),
+            candidates_message_inputs = $("#recruit-message").find("input[name='candidates']");
+
+        candidates_message_inputs.prop("checked", false);
+
+        candidates_stage.each(function(i, elem) {
+            var candidate_id = $(elem).data("candidateid");
+            candidates_message_inputs.filter("[value='" + candidate_id + "']").prop("checked", true);
+        });
+    });
+
+    $("#recruit-view-profile").on("show", function() {
+        var modal = $(this).data("modal"),
+            iframe_url = modal.options.iframeurl,
+            iframe = modal.$element.find("iframe");
+
+        iframe.prop("src", iframe_url);
+    });
+
+    $("#recruit-view-profile").on("hidden", function() {
+        $(this).data("modal").$element.removeData();
+    });
+
+    $("#id_job_status").on("change", function(event) {
+        $("#status_form").submit();
+    });
+
+    {% if candidate_message_form.errors %}
+        $("#recruit-message").modal({
+            show:true
+        });
+    {% endif %}
+});
+</script>
+{% endblock endpage %}

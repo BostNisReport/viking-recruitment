@@ -1,0 +1,54 @@
+{% load news_tags thumbnail %}
+{% load static from staticfiles %}
+
+{% get_latest_news 7 category as latest_news %}
+
+{% if latest_news %}
+    <h3><a href="{% url 'blanc_basic_news:post-list-category' slug=category %}">{{ title }}</a></h3>
+    <div class="set">
+        {% for i in latest_news|slice:":1" %}
+            <article class="hero">
+                {% if i.image_id %}
+                    {% thumbnail i.image.file "431x279" crop as thumb %}
+                    <img src="{{ thumb.url }}" alt="{{ i.title }}" style="height:auto;width:100%" />
+                {% else %}
+                        <img src="{% static 'img/default-news-image.jpg' %}" alt="{{ i.title }}" style="height:auto;width:100%" />
+                {% endif %}
+
+                <h2><a href="{{ i.get_absolute_url }}">{{ i.title }}</a></h2>
+
+                {% if i.teaser %}
+                    {{ i.teaser|linebreaks }}
+                {% else %}
+                    {{ i.content|safe|truncatewords_html:35 }}
+                {% endif %}
+            </article>
+        {% endfor %}
+
+        <aside class="related">
+            <ul class="news">
+                {% for i in latest_news|slice:"1:6" %}
+                    <li class="post">
+                        <a href="{{ i.get_absolute_url }}">
+                            {% if i.image_id %}
+                                {% thumbnail i.image.file "122x79" crop as thumb %}
+                                <img src="{{ thumb.url }}" alt="{{ i.title }}" width="{{ thumb.width }}" height="{{ thumb.height }}" />
+                            {% else %}
+                                <img src="{% static 'img/default-news-image.jpg' %}" alt="{{ i.title }}" style="height:79px;width:122px" />
+                            {% endif %}
+
+                            {{ i.title }}
+
+                            {% if i.teaser %}
+                                {{ i.teaser|linebreaks }}
+                            {% else %}
+                                {{ i.content|safe|truncatewords_html:15 }}
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'blanc_basic_news:post-list-category' slug=category %}" class="more">More News</a>
+        </aside>
+    </div>
+{% endif %}

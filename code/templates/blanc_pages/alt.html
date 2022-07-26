@@ -1,0 +1,18 @@
+{% extends "blanc_pages/base.html" %}
+{% load blancpages %}
+
+
+{% block content %}
+<div class="heading centre clear">
+    {% blancpage_render_column blanc_page "Heading" %}
+</div>
+<div class="altlayout centre clear">
+    <article class="story">
+        {% blancpage_render_column blanc_page "Main Content" %}
+    </article>
+
+    <aside class="sideblocks">
+        {% blancpage_render_column blanc_page "Side" %}
+    </aside>
+</div>
+{% endblock content %}

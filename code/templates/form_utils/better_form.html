@@ -1,0 +1,21 @@
+{% extends "form_utils/form.html" %}
+
+{% block fields %}
+{% for hidden in form.hidden_fields %}
+    {{ hidden }}
+{% endfor %}
+
+{% for fieldset in form.fieldsets %}
+    <fieldset class="{{ fieldset.classes }}">
+        {% if fieldset.legend %}
+            <legend>{{ fieldset.legend }}</legend>
+        {% endif %}
+        {% if fieldset.description %}
+            <p class="description">{{ fieldset.description }}</p>
+        {% endif %}
+        <ul>
+            {% include "form_utils/fields_as_lis.html" with fields=fieldset %}
+        </ul>
+    </fieldset>
+{% endfor %}
+{% endblock %}

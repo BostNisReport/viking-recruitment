@@ -1,0 +1,28 @@
+{% load news_tags thumbnail %}
+{% load static from staticfiles %}
+
+<div class="{{ css_classes }}">
+    <h3><a href="{% url 'blanc_basic_news:post-list' %}">Latest Viking News</a></h3>
+
+    {% get_latest_news object.number_of_posts|default:2 as latest_news %}
+    <ul class="news">
+        {% for i in latest_news %}
+            <li class="post">
+                <a href="{{ i.get_absolute_url }}">
+                    {% if i.image_id %}
+                        {% thumbnail i.image.file 79x51 crop as thumb %}
+                        <img src="{{ thumb.url }}" height="{{ thumb.height }}" width="{{ thumb.width }}" alt="{{ i.title }}" />
+                    {% else %}
+                            <img src="{% static 'img/default-news-image.jpg' %}" alt="{{ i.title }}" style="width:79px;height:51px"/>
+                    {% endif %}
+
+                    {{ i.title }}
+
+                    <p>{{ i.content|striptags|safe|truncatewords_html:15 }}</p>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'blanc_basic_news:post-list' %}" class="more">More Viking News</a>
+</div>

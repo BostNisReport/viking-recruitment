@@ -1,0 +1,15 @@
+{% extends 'recruiter/base_recruiter.html' %}
+{% load form_utils %}
+
+
+{% block content %}
+<div id="newform" class="bootform">
+    <h1>Vessels</h1>
+
+    <ul>
+        {% for i in object_list %}
+            <li><a href="{% url 'recruiter:vessel-update' pk=i.pk %}">{{ i }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

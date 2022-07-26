@@ -1,0 +1,15 @@
+{% extends "registration/base.html" %}
+
+
+{% block title %}Registration complete &mdash; {{ block.super }}{% endblock %}
+
+
+{% block content %}
+<div class="dialog clear">
+    <div class="blanc_page_blocktype_contactformblock">
+        <h1>Activation Complete,<br>Login Now!</h1>
+        <p>Your account is now activated. You must <a href="{% url 'profiles:profile-edit-home' %}">click here</a> to login and update your profile.</p>
+        <p>By completing your profile, you will have the best possible opportunity of seeking employment.</p>
+    </div>
+</div>
+{% endblock content %}

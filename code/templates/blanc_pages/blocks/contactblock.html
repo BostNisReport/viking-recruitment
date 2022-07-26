@@ -1,0 +1,23 @@
+{% load thumbnail %}
+
+<div class="{{ css_classes }}">
+    <h3>Contact</h3>
+
+    {% for i in object.contactprofile_set.all %}
+        {% with profile=i.profile %}
+            <div class="person">
+                {% if profile.image %}
+                    {% thumbnail profile.image 79x79 crop as thumb %}
+                    <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="{{ profile.name }}" />
+                {% endif %}
+
+                <h3>{{ profile.name }}</h3>
+                <h4>{{ profile.company_title }}</h4>
+
+                <div class="meta">
+                    <a href="mailto:{{ profile.email }}">&gt; Email</a>
+                </div>
+            </div>
+        {% endwith %}
+    {% endfor %}
+</div>

@@ -1,0 +1,24 @@
+<div class="{{ css_classes }}">
+    {% if form %}
+        <form method="POST" action="#"{% if has_file_field %} enctype="multipart/form-data"{% endif %}>
+            {% csrf_token %}
+            <div class="errorlist">
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    {{ error }}
+                {% endfor %}
+            {% endfor %}
+            </div>
+            {% for field in form %}
+                <div class="fieldWrapper">
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field.help_text|safe }} {{ field }}
+                </div>
+            {% endfor %}
+            <button class="button" type="submit">Apply</button>
+        </form>
+    {% else %}
+        <h3>Inactive form</h3>
+        <p>A recipient and redirect page are required to activate this form.</p>
+    {% endif %}
+</div>

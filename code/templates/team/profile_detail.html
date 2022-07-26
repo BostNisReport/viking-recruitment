@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="content centre clear">
+    <article class="story">
+        <div class="teamprofile">
+            <div class="teamprofile_image">
+                {% if object.image %}<img src="{{ object.image.url }}" height="240" width="625" alt="{{ object.name }}">{% endif %}
+            </div>
+            <div class="blanc_page_blocktype_redactorblock">
+                <h2><a href="{{ object.group.get_absolute_url }}">{{ object.group }}</a></h2>
+                <h3>
+                    <a href="{{ object.get_absolute_url }}">{{ object.name }}</a><br />
+                    {{ object.company_title }}
+                </h3>
+
+                {{ object.content|safe }}
+
+                <hr>
+
+                <h4>
+                    Email: <a href="mailto:{{ object.email }}">{{ object.email }}</a><br>
+                    Office: <a href="#">{{ object.office }}</a><br>
+                    {% if object.phone_number %}
+                        Phone: <a href="tel:{{ object.phone_number }}">{{ object.phone_number }}</a>
+                    {% endif %}
+                </h4>
+            </div>
+        </div>
+    </article>
+
+    <aside class="sideblocks">
+        {% include "news/sidebar.html" %}
+    </aside>
+</div>
+{% endblock content %}

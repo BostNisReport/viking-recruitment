@@ -1,0 +1,65 @@
+{% extends "registration/base.html" %}
+{% load staticfiles %}
+
+{% block title %}Login &mdash; {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="form-login-dialog dialog clear">
+  <form class="blanc_page_blocktype_contactformblock" method="POST" action="{% url 'login' %}">
+    <div class="login-form-wrapper float-left">
+      {% csrf_token %}
+      <h1>Login</h1>
+      {{ form.as_p }}
+
+      {% if next %}
+        <input type="hidden" name="next" value="{{ next }}" />
+      {% endif %}
+
+      <div class="login-meta">
+        <div class="float-left">
+          <p><a href="{% url 'password_reset' %}">Forgot Password?</a></p>
+          <p><a href="{% url 'registration_register' %}">Don't have an account?</a></p>
+        </div>
+        <div>
+          <button type="submit">Login</button>
+        </div>
+      </div>
+
+      <div class="float-left contact-us-login">
+        <p>If you are experiencing any technical difficulties, please <a href="mailto:info@vikingrecruitment.com">contact us</a>.</p>
+      </div>
+
+    </div>
+
+    <div class="float-left login-form-info">
+      <h2>Welcome back</h2>
+      <p>We recommend that you keep your profile up-to-date in order to gain the best chances of seeking employment.</p>
+      <p>For our latest job opening and news from the Viking Family of Companies, check out our social media pages.</p>
+      <ul class="socials">
+        <li class="icon">
+          <a href="http://www.facebook.com/pages/Jobs-at-Sea/121770547906020" target="_blank">
+            <img src="{% static "img/socials/facebook.png" %}" alt="facebook">
+          </a>
+        </li>
+        <li class="icon">
+          <a href="http://twitter.com/VikingRec" target="_blank">
+            <img src="{% static "img/socials/twitter.png" %}" alt="twitter">
+          </a>
+        </li>
+        <li class="icon">
+          <a href="http://www.linkedin.com/groups/jobs-sea-3949939" target="_blank">
+            <img src="{% static "img/socials/linkedin.png" %}" alt="linkedin">
+          </a>
+        </li>
+        <li class="icon">
+          <a href="https://instagram.com/vikingrec/" target="_blank">
+            <img src="{% static "img/socials/instagram.png" %}" alt="instagram">
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </form>
+
+</div>
+{% endblock content %}

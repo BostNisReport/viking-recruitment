@@ -1,0 +1,15 @@
+{% extends "registration/base.html" %}
+
+
+{% block title %}Activation failed &mdash; {{ block.super }}{% endblock %}
+
+
+{% block content %}
+<div class="dialog clear">
+    <div class="blanc_page_blocktype_contactformblock">
+        <h1>Account activation failed.</h1>
+        <p>Sorry, your account activation link is not valid.</p>
+        <p>If your account is already activated, you can <a href="{% url 'login' %}">login here</a>.</p>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,34 @@
+{% extends 'recruiter/base_recruiter.html' %}
+
+{% block content %}
+<div class="job-list">
+
+    <div class="search">
+        <h2>Managed user filtering</h2>
+        <form method="GET" action="">
+            {{ filter_form.as_p }}
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="results">
+        <h2>Users</h2>
+
+        <table>
+            <tbody>
+                {% for i in page_obj.object_list %}
+                    <tr>
+                        <td>{{ i.get_job_status_display }}</td>
+                        <td><a href="{% url 'recruiter:job-workflow' pk=i.id %}">{{ i.id }}</a></td>
+                        <td>{{ i.department }}</td>
+                        <td>{{ i.job_sector }}</td>
+                        <td>{{ i.rank }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include "recruiter/job_list_pagination.html" %}
+    </div>
+
+{% endblock content %}

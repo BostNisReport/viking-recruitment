@@ -1,0 +1,203 @@
+/* =============== */
+/* Viking Recruitment */
+/* =============== */
+
+/* === Main Layout === */
+* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+input, select, .input-append .add-on, .input-prepend .add-on { height:30px !important; }
+input, textarea { width:220px; }
+input[type="checkbox"], input[type="radio"] { height:auto !important; }
+
+html, body { height:100%; background:#fff; }
+.container-fluid { min-width:960px; }
+.header { border-bottom:1px solid #ddd; }
+.header .logo { float:left; font-size:20px; }
+.header .logo a { color:#333; }
+.header .user-links { float:right; margin:20px 0 0; }
+
+.under-header { border-bottom:1px solid #ddd; padding:10px 0; }
+.under-header form { margin:0; }
+.under-header .search.multi select { float:right; -webkit-border-radius:0; -moz-border-radius:0; border-radius:0; }
+.under-header .search.multi .bootstrap-select { float:right; width:120px; margin:0; }
+.under-header .search.multi .bootstrap-select .dropdown-toggle { -webkit-border-radius:0; -moz-border-radius:0; border-radius:0; }
+.under-header .search.multi .btn { float:right; -webkit-border-radius:0 4px 4px 0; -moz-border-radius:0 4px 4px 0; border-radius:0 4px 4px 0; }
+.under-header .search.multi .search-query { float:right; width:180px; border-right:0; -webkit-border-radius:15px 0 0 15px; -moz-border-radius:15px 0 0 15px; border-radius:15px 0 0 15px; }
+
+.form-search .input-search { position:relative; float:right; }
+.form-search { position:relative; }
+.form-search .search-query { padding-left:30px; }
+.form-search .icon-search { position:absolute; top:7px; left:11px; }
+
+.content { padding:20px 0; }
+.row-fluid .inner { border:1px solid #ddd; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; padding:5px 10px 10px; }
+.row-fluid .heading { border-bottom:1px solid #ddd; padding-bottom:5px; margin-bottom:15px; }
+.row-fluid .heading .complete { float:right; font-size:12px; margin-top:-3px; }
+.row-fluid .heading .complete span { padding:4px; background:#eee; border:1px solid #ccc; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; }
+
+.sidebar .fields .control-group { margin:0; padding:5px 0; border-bottom:1px solid #ddd; }
+.sidebar .control-label { width:33%; text-align:left; }
+.sidebar .controls { width:65%; margin-left:35%; }
+.sidebar .controls select, .sidebar .controls input, .sidebar .date-control > div { width:100%; }
+.sidebar .date-control { padding-right:28px; }
+.sidebar .line { border-bottom:1px solid #ddd; padding:5px 0; }
+.sidebar .line .th { float:left; width:33%; }
+.sidebar .line .td { width:65%; margin-left:35%; }
+.sidebar form { margin:0; }
+
+.right-column .tabs-left .nav { border-right:0; margin:20px 0 0; }
+.right-column .tabs-left .tab-pane { border:1px solid #ddd; padding:0 20px 20px; min-height:600px; }
+
+.section { border-top:1px solid #fff; border-bottom:1px solid #fff; margin-bottom:40px; }
+.section .close-section { margin-top:5px; }
+.section.hidden { border-color:#ddd; }
+
+.cols > ul { height:400px; overflow-y:auto; margin:0; }
+.cols .head { background:#000; color:#fff; position:relative; padding:10px 20px; border:0; }
+.cols:first-child .head { padding-left:10px; }
+.cols .head span { background:#fff; padding:0 3px; right:-10px; position:absolute; z-index:10; }
+.cols ul { padding:0 10px; }
+.cols li { padding:8px 0; border-bottom:1px solid #ddd; }
+.cols li:last-child { border:0; }
+
+.input-wide { width:100%; }
+.table .text-right { text-align:right; }
+.nomargin { margin:0; }
+.text-justify { text-align:justify; }
+.wrap { border:1px solid #ddd; padding:10px; }
+
+
+
+/* Applicant Portal */
+.applicant-portal .user-info .img-polaroid { margin-right:15px; }
+.user-info .statement { margin:20px 0; }
+.timeline tr:first-child td { border:0; }
+.timeline td:first-child { min-width:120px; }
+.applicant-portal .pagination { margin:0 0 10px; }
+
+/* Edit Profile */
+.edit-profile .user-info form > .text-center { margin-bottom:20px; }
+.edit-profile .img-polaroid { margin-bottom:15px; }
+
+/* Recruiter Dashboard */
+.recruiter-dashboard .live .tab-pane { border:1px solid #000; border-top:0; }
+.recruiter-dashboard .live .tab-pane .cols { margin:0; width:25%; border-left:1px solid #000; }
+.recruiter-dashboard .live .tab-pane .cols:first-child { border:0; }
+.recruiter-dashboard .live .cols p { margin:0; }
+.recruiter-dashboard .live .cols .pull-left { margin-right:5px; }
+.recruiter-dashboard .live .cols .pull-right { margin-left:5px; }
+.recruiter-dashboard .updates table tr:first-child td { border:0; }
+.recruiter-dashboard .updates .tab-pane { border:1px solid #ddd; border-top:0; padding:10px; }
+.recruiter-dashboard .updates .pagination { border-top:1px solid #ccc; margin:0; padding-top:10px; }
+
+/* Job List */
+.job-list .job-filtering { border:1px solid #000; }
+.job-list .cols { margin:0; width:33.33%; border-left:1px solid #000; }
+.job-list .cols:first-child { border-left:0; }
+.job-list .jobs table tr:first-child th { border:0; }
+.job-list .jobs .tab-pane { border:1px solid #ddd; border-top:0; padding:10px; }
+.job-list .jobs .pagination { border-top:1px solid #ccc; margin:0; padding-top:10px; }
+
+/* Job Detail Recruiter */
+.job-detail-recruiter .table th { font-size:24px; line-height:30px; font-weight:normal; border:0; border-bottom:1px solid #ddd; }
+.job-detail-recruiter .table th select { margin:0; }
+.job-detail-recruiter .table td { border:0; }
+.job-detail-recruiter .table th.small { font-size:18px; }
+.job-detail-recruiter .table .last td { border-bottom:1px solid #ddd; }
+.job-detail-recruiter .table td .checkbox { margin:15px 0 0; }
+.job-detail-recruiter .content .btn-group.pull-right { margin-top:15px; }
+
+/* Whiteboards & Managed Staff */
+.whiteboards .content .tab-content { padding:10px; border:1px solid #ddd; border-top:0; }
+.whiteboards .content .tab-content .table { border:1px solid #ddd; border-top:0; margin:0; }
+
+/* Client Portal */
+.client-portal .content .tab-content { padding:20px; border:1px solid #ddd; border-top:0; }
+.client-portal .content .tab-content .table { border:1px solid #ddd; border-top:0; margin:0; }
+.client-portal .content .info { border:1px solid #ddd; padding:10px; }
+
+/* Client Job */
+.client-job .table th { font-size:24px; line-height:30px; font-weight:normal; border:0; border-bottom:1px solid #ddd; }
+.client-job .table th select { margin:0; }
+.client-job .table td { border:0; }
+.client-job .table td.img { width:140px; }
+.client-job .table th.small { font-size:18px; }
+.client-job .wrap { margin-bottom:20px; }
+
+/* Applicant Profile */
+.applicant-profile .summary { margin-bottom:40px; }
+.applicant-profile .summary th { font-size:24px; line-height:30px; font-weight:normal; border:0; border-bottom:1px solid #ddd; }
+.applicant-profile .summary th:first-child > span { float:left; }
+.applicant-profile .summary th .complete { font-size:14px; margin:0 0 0 20px; float:left; }
+.applicant-profile .summary th .complete span { background:#3a87ad; padding:5px; -webkit-border-radius:4px; -moz-border-radius:4px; border-radius:4px; }
+.applicant-profile .summary th .star { float:left; background:#eee; font-size:14px; line-height:1; border:1px solid #ccc; margin:0 10px 0 0; padding:7px; -webkit-border-radius:4px; -moz-border-radius:4px; border-radius:4px; }
+.applicant-profile .summary img.pull-left { margin-right:10px; }
+.applicant-profile .profile .nav { margin:20px 0 0; border-right:0; }
+.applicant-profile .profile .tab-content { padding:0 20px; border:1px solid #ddd; min-height:500px; }
+.applicant-profile .profile .tab-content .edit { margin:10px 0 0; }
+.applicant-profile .timeline .span3 select.pull-right { margin:-5px 0 0; }
+.applicant-profile .timeline .tab-content { border:1px solid #ddd; border-top:0; padding:10px; }
+
+/* Recruitment Workflow */
+.recruitment-workflow .job-detail th { font-size:24px; line-height:30px; font-weight:normal; border:0; border-bottom:1px solid #ddd; }
+.recruitment-workflow .job-detail th:first-child .btn { margin:-5px 0 0 10px; }
+.recruitment-workflow .job-detail th select { margin:0; }
+.recruitment-workflow .job-detail td { border:0; }
+.recruitment-workflow .job-detail th.small { font-size:18px; }
+
+.recruitment-workflow .notes .history { max-height:250px; overflow-y:auto; }
+.recruitment-workflow .notes .history .note { padding:8px 0; border-top:1px solid #ddd; }
+.recruitment-workflow .notes .history .note:first-child { border-top:0; padding-top:0; }
+.recruitment-workflow .notes .history .note p:first-child { font-weight:bold; }
+.recruitment-workflow .notes .history .note p { margin:0; }
+
+.recruitment-workflow .candidate { margin-bottom:20px; }
+.recruitment-workflow .candidate .nav { margin:20px 0 0; border-right:0; }
+.recruitment-workflow .candidate .tab-content { border:1px solid #ddd; padding:20px 40px; min-height:200px; }
+.recruitment-workflow .candidate .tab-content form { margin:0; }
+.recruitment-workflow .candidate .tab-content label { text-align:left; }
+.recruitment-workflow .candidate .submit { margin:20px 0 0; text-align:center; }
+.recruitment-workflow .candidate .submit button { width:20%; }
+
+.recruitment-workflow .selection { margin-bottom:20px; }
+.recruitment-workflow .selection .margin { margin-bottom:40px; }
+.recruitment-workflow .selection .margin .span9 .cols { margin:0; width:33.33%; border:1px solid #000; border-left:0; }
+.recruitment-workflow .selection .margin .span9 .cols:first-child { border-left:1px solid #000; }
+
+.recruitment-workflow .selection .margin .span3 .nav { margin:0; background:#000; border:0; height:40px; padding:7px 7px 0; }
+.recruitment-workflow .selection .margin .span3 .nav a { padding:6px; }
+.recruitment-workflow .selection .margin .span3 .tab-content { border:1px solid #000; }
+
+.recruitment-workflow .selection .item .star { float:left; padding:3px 5px; background:#eee; border:1px solid #ccc; -webkit-border-radius:4px; -moz-border-radius:4px; border-radius:4px; }
+.recruitment-workflow .selection .item { padding-top:10px; border:0; }
+.recruitment-workflow .selection .item > div { margin:0 32px; border-bottom:1px solid #ddd; padding:0 0 10px; }
+.recruitment-workflow .selection .item > div span { line-height:28px; font-weight:bold; }
+.recruitment-workflow .selection .item a.plus,
+.recruitment-workflow .selection .item a.minus { float:right; clear:right; padding:3px 5px; background:#eee; border:1px solid #ccc; -webkit-border-radius:4px; -moz-border-radius:4px; border-radius:4px;}
+.recruitment-workflow .selection .item a.plus { margin:28px 0 5px 0; }
+
+.recruitment-workflow .successful { margin-bottom:0; }
+.recruitment-workflow .successful .wrap { margin-bottom:20px; }
+.recruitment-workflow .successful .wrap.empty table { margin:0; }
+.recruitment-workflow .successful .wrap.empty th { border:0; }
+.recruitment-workflow .successful th { font-size:24px; line-height:30px; font-weight:normal; border:0; border-bottom:1px solid #ddd; }
+.recruitment-workflow .successful th .star { float:left; background:#eee; font-size:14px; line-height:1; border:1px solid #ccc; margin:0 10px 0 0; padding:7px; -webkit-border-radius:4px; -moz-border-radius:4px; border-radius:4px; }
+.recruitment-workflow .successful img.pull-left { margin-right:10px; }
+
+.row-fluid.arrow span { padding:15px; background:#eee; border:1px solid #ccc; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; }
+
+
+/* === Modals === */
+
+.modal-page { background:#eee; }
+.modal-page h2 { width:390px; top:10%; left:50%; position:relative; margin:0 auto 0 -195px; }
+.modal { width:390px; margin-left:-195px; top:20%; }
+.modal .modal-header { padding:5px 30px; }
+.modal .modal-body { padding:30px; }
+.modal .modal-footer { padding:20px 30px; }
+.modal form { margin:0; }
+.modal .control-group { margin:0; padding:10px 0; }
+.modal .control-label { text-align:left; width:100px; }
+.modal .controls { margin-left:110px; }
+
+
+

@@ -1,0 +1,38 @@
+{% load humanize %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Nationality</th>
+            <th>CoC</th>
+            <th>Last updated</th>
+            <th>Managed By</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in page_obj.object_list %}
+            <tr>
+                <td><a href="#" type="button" data-toggle="modal" data-target="#recruit-view-profile" data-iframeurl="{% url 'recruiter:profile-edit-home-readonly' pk=i.pk %}">{{ i.get_full_name }}</a></td>
+                <td>{{ i.date_of_birth|default:"-" }}</td>
+                <td>{{ i.get_nationality_display|default:"-" }}</td>
+                <td>
+                    {% for certificate in i.competencycertificate_set.all %}
+                        {% if certificate.certificate %}
+                            {{ certificate.certificate }}
+
+                            {% if certificate.issuing_authority %}
+                                ({{ certificate.issuing_authority }})
+                            {% endif %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ i.updated|timesince }} ago</td>
+                <td>{{ i.managed_company }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

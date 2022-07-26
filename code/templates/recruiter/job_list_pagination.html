@@ -1,0 +1,33 @@
+{% load pagination_links %}
+
+<div class="pagination pagination-centered">
+    {% if page_obj.has_other_pages %}
+        {% get_pagination_links paginator page_obj as pagination_links %}
+
+        <ul>
+            {% if page_obj.has_previous %}
+                <li><a href="?{{ search_params }}&amp;page={{ page_obj.previous_page_number }}">Prev</a></li>
+            {% else %}
+                <li class="disabled"><a href="#">Prev</a></li>
+            {% endif %}
+
+            {% for page_num in pagination_links %}
+                {% if page_num.is_filler %}
+                    <li class="disabled"><a href="#">&hellip;</a></li>
+                {% else %}
+                    <li{% if page_num.is_current %} class="active"{% endif %}>
+                        <a href="?{{ search_params }}&amp;page={{ page_num.number }}#timeline">{{ page_num.number }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li><a href="?{{ search_params }}&amp;page={{ page_obj.next_page_number }}">Next</a></li>
+            {% else %}
+                <li class="disabled"><a href="#">Next</a></li>
+            {% endif %}
+        </ul>
+
+        <div class="pagination_text">Viewing {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ paginator.count }}</div>
+    {% endif %}
+</div>

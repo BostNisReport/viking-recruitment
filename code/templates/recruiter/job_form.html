@@ -1,0 +1,51 @@
+{% extends 'recruiter/base_recruiter.html' %}
+{% load static from staticfiles %}
+{% load form_utils %}
+
+
+{% block endhead %}
+<link rel="stylesheet" href="{% static 'redactorjs/redactor.css' %}" />
+{% endblock endhead %}
+
+
+{% block content %}
+<div id="newform" class="bootform">
+<h1>Job Details</h1>
+<form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form|render }}
+
+    {{ formset.management_form }}
+
+    {% for form in formset %}
+        <div id="id_{{ formset.prefix }}_{{ forloop.counter0 }}">
+            {{ form.as_p }}
+        </div>
+    {% endfor %}
+
+    <button type="button" class="add_another" data-prefix="{{ formset.prefix }}">Add another</button>
+
+    <div id="empty_{{ formset.prefix }}" class="empty_form">
+        {{ formset.empty_form.as_p }}
+    </div>
+
+    <button class="more" type="submit">Save</button>
+    <br>
+    <button class="more" type="submit" name="_continue" value="1">Save &amp; continue editing</button>
+</form>
+</div>
+{% endblock content %}
+
+
+{% block endpage %}
+<script src="{% static 'redactorjs/redactor.min.js' %}"></script>
+<script type="text/javascript">
+$().ready(function() {
+    $("#id_description").redactor({
+        iframe: true,
+        css: "{% static 'redactorjs/redactor-iframe.css' %}"
+    });
+});
+</script>
+{% endblock endpage %}

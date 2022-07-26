@@ -1,0 +1,15 @@
+{% autoescape off %}
+Congratulations on starting your Viking personal portfolio.
+
+Login URL: {{ protocol }}://{{ site.domain }}{% url 'profiles:profile-edit-home' %}
+Username: {{ new_user.email }}
+
+Please take your time in completing your details: giving us an accurate statement of your certification and experience to date, allows us to match you with the most suitable client. It also helps us to identify you more quickly and effectively in order to place your CV with the client more rapidly.
+
+If you happen to accidentally log out, or your browser freezers or crashes, you will not lose your hard work: when you log on again, you can complete the rest of your profile.
+
+
+--
+Viking Recruitment
+www.vikingrecruitment.com
+{% endautoescape %}

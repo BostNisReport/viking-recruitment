@@ -1,0 +1,241 @@
+{% load staticfiles %}
+{% load form_utils %}
+
+    {% if recruiter %}
+        <div class="recruiter-tabs">
+            <ul class="nav nav-tabs">
+                {% for section_slug, section in profile_forms.iteritems %}
+                    {% if recruiter %}
+                        <li role="presentation"{% if active_section == section_slug %}
+                        class="active"{% endif %}>
+                            <a href="{% url 'recruiter:profile-edit-readonly' pk=profile.pk section=section_slug %}">
+                                {{ section.name }}
+                            </a>
+                        </li>
+                    {% else %}
+                        {% if not section.admin %}
+                            <li role="presentation" {% if active_section == section_slug %} class="active"{% endif %}>
+                                <a href="{% url 'profiles:profile-edit' section=section_slug %}">
+                                    <span>{{ forloop.counter|stringformat:"02d" }}</span> {{ section.name }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+
+      <div class="tabs">
+        <h3>Candidate Profile</h3>
+
+        {% regroup profile_forms.values by group.name as nav %}
+
+        <ul class="profile-tabs">
+          {% for menu in nav %}
+          <li><strong>{{ menu.grouper }}</strong>
+            <ul>
+                {% for item in menu.list %}
+                    {% if item.group.slug %}
+                        <li{% if active_section == item.group.slug %} class="active"{% endif %}>
+                            <a class="more"
+                                    href="{% url 'profiles:profile' section=item.group.slug %}">
+                                {{ item.name }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    {% endif %}
+
+
+    <div class="profile-form {% if recruiter %}recruiter-client-edit{% endif %}
+        {% if section == 'profile' %}recruiter-profile-edit{% endif %}">
+
+    {% include "includes/alerts.html" %}
+
+    <h2>
+        {% if not recruiter %}
+            <span>{{ form_number|stringformat:"02d" }}</span>
+        {% endif %}
+
+        {{ form_section.name }}
+    </h2>
+
+  {% if relevant_warning %}
+      <p class="recruiter-warning">
+          Some questions or sections may not be relevant in your job role or sector but we recommend inputting as much information as possible. If you are unsure of any questions, leave blank and save.
+      </p>
+  {% endif %}
+
+  {% if marine_warning %}
+      <p class="recruiter-warning">These questions are only relevant if you are seeking employment on ships or marine based work. If you are seeking work in other sectors you do not have to complete.</p>
+  {% endif %}
+
+    {% if primary_fields_required %}
+      <p>
+        All fields marked with an asterisk (*) must be completed within the Primary Information Section.
+      </p>
+    {% endif %}
+
+    {% if form_section.message %}
+      <p>
+        {{ form_section.message }}
+      </p>
+    {% endif %}
+
+  {% if recruiter and active_section == 'previous-work' and readonly %}
+    {% include "recruiter/includes/previous_work.html" %}
+  {% else %}
+
+    {% if form or formset %}
+
+    <form method="POST" action="" enctype="multipart/form-data" class="form-horizontal {{ section }}">
+          {% csrf_token %}
+
+
+          {% if form %}
+            {% if form.fieldsets %}
+              {% for fieldset in form.fieldsets %}
+
+                <fieldset class="{{ fieldset.classes }}">
+                    {% if fieldset.legend %}
+                        <legend>
+                            {{ fieldset.legend }}
+                                {% if fieldset.description %}
+                                    <p class="description">{{ fieldset.description }}</p>
+                                {% endif %}
+                        </legend>
+                    {% endif %}
+
+                    {% if readonly %}
+                      <table class="table profile-readonly">
+                          {% for field in fieldset %}
+                              {% include "includes/bootstrap2/horizontal_form_field_readonly.html" %}
+                          {% endfor %}
+                      </table>
+                    {% else %}
+                        {% for field in fieldset %}
+                            {% include "includes/bootstrap2/horizontal_form_field.html" %}
+                        {% endfor %}
+                    {% endif %}
+                </fieldset>
+
+              {% endfor %}
+            {% else %}
+              {% for field in form %}
+                {% if readonly %}
+                    <table class="table profile-readonly">
+                        {% include "includes/bootstrap2/horizontal_form_field_readonly.html" %}
+                    </table>
+                {% else %}
+                    {% include "includes/bootstrap2/horizontal_form_field.html" %}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endif %}
+
+          {% if formset %}
+              {{ formset.management_form }}
+              {{ formset.non_form_errors }}
+
+              {% if readonly %}
+                {% if formset.queryset %}
+                    {% if form_section.readonly_fields %}
+                        {% include "profiles/includes/readonly/table.html" %}
+                    {% else %}
+                        <table class="table profile-readonly">
+                            {% for form in formset %}
+                                {% with new_form=True %}
+                                  {% for field in form %}
+                                    {% include "includes/bootstrap2/horizontal_form_field_readonly.html" %}
+                                  {% endfor %}
+                                {% endwith %}
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                {% else %}
+                    <br>
+                    <p>This section is currently empty. To add information, please click Edit.</p>
+                {% endif %}
+              {% else %}
+                  {% for form in formset %}
+                      {% if form.non_field_errors.as_text %}
+                          <div class="alert alert-error alert-dismissible"  role="alert" >
+                              <button type="button" class="close" data-dismiss="alert"
+                                  aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                              <strong>{{ form.non_field_errors.as_text }}</strong>
+                          </div>
+                      {% endif %}
+
+                      <div id="id_{{ formset.prefix }}_{{ forloop.counter0 }}" class="seperator">
+
+                          {% for field in form %}
+                            {% include "includes/bootstrap2/horizontal_form_field.html" %}
+                          {% endfor %}
+
+                      </div>
+                  {% endfor %}
+              {% endif %}
+
+          {% endif %}
+
+          <div class="control-group">
+            <div class="controls {% if readonly %}edit-control{% endif %}">
+                {% if formset and not readonly %}
+                      <button type="button" class="btn btn-info add_another"
+                          data-prefix="{{ formset.prefix }}">
+                          Add another
+                      </button>
+                {% endif %}
+
+              {% if readonly %}
+
+                  {% if recruiter %}
+                      {% url 'recruiter:profile-edit' pk=profile.pk section=section as edit_url%}
+                  {% else %}
+                      {% url 'profiles:profile-edit' section=section as edit_url %}
+                  {% endif %}
+
+                  <a href="{{ edit_url }}"
+                      class="btn btn-primary">
+                      Edit <i class="icon-edit icon-white"></i>
+                  </a>
+
+              {% else %}
+                  <button type="submit" class="btn btn-success">Save</button>
+              {% endif %}
+            </div>
+          </div>
+      </form>
+    {% endif %}
+
+    {% if not readonly %}
+        {% if formset %}
+            <br>
+            <div id="empty_{{ formset.prefix }}" class="empty_form">
+                {% for field in formset.empty_form %}
+                  {% include "includes/bootstrap2/horizontal_form_field.html" %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {# Display timeline on profile tab #}
+    {% if profile_detail %}
+      <div class="sidebar">
+        {% include "profiles/include_sidebar.html" %}
+      </div>
+
+      {% include "recruiter/includes/timeline.html" %}
+    {% endif %}
+
+  {% endif %}
+</div>

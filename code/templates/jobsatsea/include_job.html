@@ -1,0 +1,54 @@
+{% load static from staticfiles %}
+<div class="job">
+    <div class="meta">
+        <h3><a href="{% url 'jobsatsea:job-detail' pk=object.pk %}">Job {{ object.id }} Details</a></h3>
+        <dl>
+            <dt>Rank/Position</dt>
+            <dd>{{ object.rank }}</dd>
+            <dt>Employer Type</dt>
+            <dd>{{ object.sector }}</dd>
+            <dt>Job Type</dt>
+            <dd>{{ object.get_job_type_display }}</dd>
+            {% if object.certification or object.experience_required %}
+                <dt>Certification &amp; Experience</dt>
+                <dd>
+                    {% if object.certification %}
+                        {{ object.certification }}
+                        <br />
+                    {% endif %}
+                    {% if object.experience_required %}
+                        {{ object.experience_required }}
+                    {% endif %}
+                </dd>
+            {% endif %}
+            <dt>Location</dt>
+            <dd>{{ object.location }}</dd>
+        </dl>
+        {% if object.sector.name == 'Viking Hospitality' %}
+            <img src="{% static 'img/viking_hospitality.png' %}" alt="Viking Hospitality" />
+        {% endif %}
+    </div>
+    <div class="description">
+        <h3>
+            Job Description
+
+            {% if object.pk in applied_for %}
+                <button class="action-float-right apply-btn" type="button" disabled>Applied</button>
+            {% else %}
+                <form class="action-float-right" method="POST" action="{% url 'jobsatsea:job-apply' pk=object.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="apply-btn">Apply</button>
+                </form>
+            {% endif %}
+        </h3>
+        <div class="description-wrap">
+            {{ object.description|safe }}
+        </div>
+    </div>
+    <div class="social_bar">
+        <a href="https://www.facebook.com/sharer/sharer.php?u={% filter urlencode:"" %}http://{{ request.get_host }}{{ object.get_absolute_url }}{% endfilter %}" class="facebook-icon icon" target="_blank"></a>
+        <a href="https://twitter.com/share?related=VikingRec&amp;url={% filter urlencode:"" %}http://{{ request.get_host }}{{ object.get_absolute_url }}{% endfilter %}" class="twitter-icon icon" target="_blank"></a>
+        <a href="https://www.linkedin.com/shareArticle?u={% filter urlencode:"" %}http://{{ request.get_host }}{{ object.get_absolute_url }}{% endfilter %}" class="linkedin-icon icon" target="_blank"></a>
+        <a href="mailto:?body=tisbody&amp;subject={% filter urlencode:"" %}http://{{ request.get_host }}{{ object.get_absolute_url }}{% endfilter %}" class="email-icon icon" target="_blank"></a>
+    </div>
+</div>

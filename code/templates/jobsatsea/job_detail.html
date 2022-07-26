@@ -1,0 +1,16 @@
+{% extends jobsatsea_base_template %}
+
+
+{% block content %}
+<div class="content centre clear">
+    <div id="jos">
+        <h1>Jobs</h1>
+
+        <div id="joblist">
+            {% include "jobsatsea/include_job.html" %}
+        </div>
+
+        {% include "jobsatsea/include_form.html" %}
+    </div>
+</div>
+{% endblock content %}

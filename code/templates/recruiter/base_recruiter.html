@@ -1,0 +1,84 @@
+{% load static from staticfiles %}{% load recruiter_tags %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Viking Recruitment{% endblock %}</title>
+    <link href='http://fonts.googleapis.com/css?family=Signika:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'css/viking.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/recruit.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--[if lt IE 9]>
+        <script src="{% static 'js/html5shiv.js' %}"></script>
+    <![endif]-->
+
+    {% block analytics %}
+    {% if request.get_host == "www.vikingrecruitment.com" %}
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-9958264-1']);
+            _gaq.push(['_trackPageview']);
+            _gaq.push(['b._setAccount', 'UA-44709215-1']);
+            _gaq.push(['b._trackPageview']);
+
+            (function() {
+               var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+               ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    {% endif %}
+    {% endblock analytics %}
+
+    {% block endhead %}{% endblock %}
+</head>
+<body>
+<div class="main">
+    <div class="centre clear">
+        <div class="login">
+            <a href="{% url 'password_change' %}">Change Password</a> |
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+
+        <header class="brand">
+          <h1>
+            <div class="background-right no-background">
+              <form method="GET" action="{% url 'recruiter:search' %}" id="recruit-search">
+              {% get_recruiter_search_form as recruiter_search_form %}
+              {{ recruiter_search_form.q }}
+              {{ recruiter_search_form.st }}
+              <button type="submit">Go</button>
+              </form>
+            </div>
+            <a class="logo" href="/">Viking <span>we place people first</span></a>
+          </h1>
+          <nav id="meganav">
+            <a href="#" class="menutoggle">Navigation</a>
+            <ul id="primary_nav" class="primary">{% spaceless %}
+                <li><a class="" href="{% url 'recruiter:dashboard' %}">Dashboard</a></li>
+                <li><a class="" href="{% url 'recruiter:job-list' %}">Jobs</a></li>
+                <li><a class="" href="{% url 'recruiter:job-create' %}">+ Job</a></li>
+                <li><a class="" href="{% url 'recruiter:company-list' %}">Companies</a></li>
+                <li><a class="" href="{% url 'recruiter:company-create' %}">+ Company</a></li>
+                <li><a class="" href="{% url 'recruiter:vessel-list' %}">Vessels</a></li>
+                <li><a class="" href="{% url 'recruiter:vessel-create' %}">+ Vessel</a></li>
+            {% endspaceless %}</ul>
+          </nav>
+        </header>
+
+        <article id="app">
+            {% block content %}{% endblock %}
+        </article>
+    </div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.js' %}"></script>
+<script src="{% static 'js/bootstrap-tab.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
+{% block endpage %}{% endblock %}
+</body>
+</html>

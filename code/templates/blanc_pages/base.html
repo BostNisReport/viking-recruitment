@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load blancpages %}
+
+
+{% block title %}{{ blanc_page.page.title }} - {{ block.super }}{% endblock %}
+
+{% block nav %}
+{% include "includes/nav.html" with blanc_page=blanc_page only %}
+
+<p class="breadcrumbs">
+    <a href="/">Home</a> >
+    {% for i in blanc_page.page.get_ancestors %}
+        <a href="{{ i.get_absolute_url }}">{{ i.title }}</a> >
+    {% endfor %}
+    <a href="{{ blanc_page.page.get_absolute_url }}">{{ blanc_page.page.title }}</a>
+</p>
+{% endblock nav %}
+
+{% block starthead %}
+{% blancpage_head %}
+{% endblock starthead %}
+
+
+{% block startbody %}
+{% blancpage_startbody %}
+{% endblock startbody %}

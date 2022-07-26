@@ -1,0 +1,40 @@
+{% extends 'recruiter/base_recruiter.html' %}
+
+
+{% block content %}
+<div id="newform" class="bootform">
+    <h2>Viking Users Reports</h2>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <h4>Users by nationality</h4>
+        <button class="btn" name="report" value="nationality" type="submit">Download</button>
+
+        <h4>Users by age</h4>
+        <button class="btn" name="report" value="age" type="submit">Download</button>
+
+        <h4>Users by last updated</h4>
+        <button class="btn" name="report" value="updated" type="submit">Download</button>
+
+        <h4>Users by rank on latest position</h4>
+        <button class="btn" name="report" value="rank" type="submit">Download</button>
+
+        <h4>Users by certificate of competency</h4>
+        <button class="btn" name="report" value="coc" type="submit">Download</button>
+
+        <h4>Users by location</h4>
+        <button class="btn" name="report" value="location" type="submit">Download</button>
+
+        <h4>Users by status</h4>
+        <button class="btn" name="report" value="status" type="submit">Download</button>
+
+        <h4>Users by managed company</h4>
+        <button class="btn" name="report" value="managed_company" type="submit">Download</button>
+
+        <h4>Users by advert reference</h4>
+        <button class="btn" name="report" value="advert_reference" type="submit">Download</button>
+    </form>
+</div>
+{% endblock content %}

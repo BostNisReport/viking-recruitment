@@ -1,0 +1,38 @@
+{% load thumbnail %}
+
+<h3><a href="{% url 'blanc_basic_events:event-list' %}">{{ events_title|default:"Events Calendar" }}</a></h3>
+<div class="set">
+    {% for event_date, i in event_list|slice:":1" %}
+        <article class="hero">
+            {% if i.image %}
+                {% thumbnail i.image "431x279" crop as thumb %}
+                <img src="{{ thumb.url }}" alt="{{ i.title }}" width="{{ thumb.width }}" height="{{ thumb.height }}" />
+            {% endif %}
+
+            <h2><a href="{{ i.get_absolute_url }}">{{ i.title }}</a></h2>
+            <h3 style="margin-bottom:10px">{{ i.start|date:"d M Y" }}{% if i.start != i.end %} - {{ i.end|date:"d M Y" }}{% endif %}</h3>
+
+            {{ i.description|safe|truncatewords_html:50 }}
+        </article>
+    {% endfor %}
+
+    <aside class="related">
+        <ul class="news">
+            {% for event_date, i in event_list|slice:"1:6" %}
+                <li class="post">
+                    <a href="{{ i.get_absolute_url }}">
+                        {% if i.image %}
+                            {% thumbnail i.image "122x79" crop as thumb %}
+                            <img src="{{ thumb.url }}" alt="{{ i.title }}" width="{{ thumb.width }}" height="{{ thumb.height }}" />
+                        {% endif %}
+
+                        {{ i.title }}
+                        <strong>{{ i.start|date:"d M Y" }}{% if i.start != i.end %} - {{ i.end|date:"d M Y" }}{% endif %}</strong>
+                        <p>{{ i.summary|safe|truncatewords_html:20 }}</p>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'blanc_basic_events:event-list' %}" class="more">More Events</a>
+    </aside>
+</div>

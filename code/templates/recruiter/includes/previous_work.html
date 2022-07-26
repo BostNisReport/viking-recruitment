@@ -1,0 +1,36 @@
+{% load staticfiles %}
+{% load form_utils %}
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Work type</th>
+        <th>Date from</th>
+        <th>Date to</th>
+        <th>Vessel type</th>
+        <th>Position</th>
+        <th>Company or Vessel name</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      {% for previous_work in profile.previouswork_set.all %}
+        <tr>
+          <td>{{ previous_work.get_work_type_display }}</td>
+          <td>{{ previous_work.date_from }}</td>
+          <td>{{ previous_work.date_to }}</td>
+          <td>{{ previous_work.vessel_type.name }}</td>
+          <td>{{ previous_work.rank.name }}</td>
+          <td>{{ previous_work.company }}</td>
+          <td>{{ previous_work.trade.name }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'recruiter:profile-edit' pk=profile.pk section=section %}"
+  class="btn btn-primary pull-right">
+  Edit <i class="icon-edit icon-white"></i>
+</a>

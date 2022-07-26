@@ -1,0 +1,14 @@
+{% extends "registration/base.html" %}
+
+
+{% block title %}Logged Out &mdash; {{ block.super }}{% endblock %}
+
+
+{% block content %}
+<div class="dialog clear">
+<div class="blanc_page_blocktype_contactformblock">
+<h1>Successfully Logged Out</h1>
+<p>You have been logged out, click here to <a href="{% url 'login' %}">login again</a>.</p>
+</div>
+</div>
+{% endblock content %}

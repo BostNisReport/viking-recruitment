@@ -1,0 +1,45 @@
+<li {% if object in user.rejected_positions.all %}class='rejected-user'{% endif %}>
+  <small>
+    <a href="#" type="button" data-toggle="modal" data-target="#recruit-view-profile"
+    data-iframeurl="{% url 'recruiter:profile-edit-home-readonly' pk=user.pk %}">
+      <strong style="{% if user.id in all_candidates_ids %}color: green;{% endif %}">
+        {{ user.get_full_name }}
+      </strong>
+    </a>
+    <br />
+
+    {% if user.latest_position %}
+      {{ user.latest_position.company }}
+      <br>
+      {{ user.latest_position.rank.name }}
+      <br/>
+    {% endif %}
+
+    {% if user.date_of_birth %}{{ user.date_of_birth }}<br />{% endif %}
+
+    {% if user.nationality %}{{ user.nationality.name.capitalize }}<br />{% endif %}
+
+    {{ user.get_status_display }}<br />
+
+    {% if application %}
+      Applied: {{ application.date }}<br/>
+    {% endif %}
+
+    Profile {{ user.profile_complete }}%<br />
+  </small>
+
+  {% if not user.id in all_candidates_ids %}
+      <form method="POST" action="?action=addcandidate" class="candidate_update search_add">
+        {% csrf_token %}
+        <input type="hidden" name="user" value="{{ user.id }}">
+        <button type="submit">Add</button>
+      </form>
+      <form method="POST" action="?action=rejectcandidate" class="candidate_update search_add float-right">
+        {% csrf_token %}
+        <input type="hidden" name="user" value="{{ user.id }}">
+        <button type="submit" {% if object in user.rejected_positions.all %}disabled{% endif %}>
+            Reject
+        </button>
+      </form>
+  {% endif %}
+</li>

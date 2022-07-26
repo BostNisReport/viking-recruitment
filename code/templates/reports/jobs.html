@@ -1,0 +1,28 @@
+{% extends 'recruiter/base_recruiter.html' %}
+
+
+{% block content %}
+<div id="newform" class="bootform">
+    <h2>Viking Jobs Reports</h2>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <h4>Jobs by status</h4>
+        <button class="btn" name="report" value="status" type="submit">Download</button>
+
+        <h4>Jobs by sector</h4>
+        <button class="btn" name="report" value="sector" type="submit">Download</button>
+
+        <h4>Jobs by company</h4>
+        <button class="btn" name="report" value="company" type="submit">Download</button>
+
+        <h4>Jobs by vessel</h4>
+        <button class="btn" name="report" value="vessel" type="submit">Download</button>
+
+        <h4>Jobs by rank</h4>
+        <button class="btn" name="report" value="rank" type="submit">Download</button>
+    </form>
+</div>
+{% endblock content %}

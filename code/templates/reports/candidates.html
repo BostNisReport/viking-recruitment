@@ -1,0 +1,15 @@
+{% extends 'recruiter/base_recruiter.html' %}
+
+
+{% block content %}
+<div id="newform" class="bootform">
+    <h2>Viking Candidates Reports</h2>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <h4>Job candidates by stage</h4>
+        <button class="btn" name="report" value="stage" type="submit">Download</button>
+    </form>
+</div>
+{% endblock content %}

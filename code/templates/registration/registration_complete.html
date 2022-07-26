@@ -1,0 +1,15 @@
+{% extends "registration/base.html" %}
+
+
+{% block title %}Account activation required &mdash; {{ block.super }}{% endblock %}
+
+
+{% block content %}
+<div class="dialog clear">
+    <div class="blanc_page_blocktype_contactformblock">
+        <h1>Account activation required.</h1>
+        <p>An email has been sent to your registered email address with a link to activate your account. Please click the activation link in the email to continue.</p>
+        <p>Please check any spam folders in your email account if the activation email gets incorrectly tagged as spam.</p>
+    </div>
+</div>
+{% endblock content %}

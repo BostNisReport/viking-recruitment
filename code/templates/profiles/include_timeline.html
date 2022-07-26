@@ -1,0 +1,59 @@
+{% load pagination_links %}
+
+{% if timeline_filter_list %}
+    <ul class="tabs">
+        <li><a href="?#timeline" class="{% if not active_timeline_filter %}active{% endif %}">All</a></li>
+        {% for message_id, filter_name in timeline_filter_list %}
+            <li><a href="?messages={{ message_id }}#timeline" class="{% if message_id == active_timeline_filter %}active{% endif %}">{{ filter_name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<table class="table" id="timeline">
+    <thead>
+        <tr><td>Type</td><td>Message</td><td>Date</td></tr>
+    </thead>
+    {% for i in page_obj.object_list %}
+        <tr>
+            <td>{{ i.get_message_type_display }}</td>
+            <td>
+                {% if i.timeline_template %}
+                    {% include i.timeline_template with entry=i obj=i.content_object only %}
+                {% else %}
+                    {{ i.message|linebreaksbr }}
+                {% endif %}
+            </td>
+            <td class="muted text-right">{{ i.date|date:"d/m/y" }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% if page_obj.has_other_pages %}
+    {% get_pagination_links paginator page_obj as pagination_links %}
+
+    <div class="pagination pagination-centered">
+        <ul>
+            {% if page_obj.has_previous %}
+                <li><a href="?{{ timeline_params }}&amp;page={{ page_obj.previous_page_number }}#timeline">Prev</a></li>
+            {% else %}
+                <li class="disabled"><a href="#">Prev</a></li>
+            {% endif %}
+
+            {% for page_num in pagination_links %}
+                {% if page_num.is_filler %}
+                    <li class="disabled"><a href="#">&hellip;</a></li>
+                {% else %}
+                    <li{% if page_num.is_current %} class="active"{% endif %}>
+                        <a href="?{{ timeline_params }}&amp;page={{ page_num.number }}#timeline">{{ page_num.number }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li><a href="?{{ timeline_params }}&amp;page={{ page_obj.next_page_number }}#timeline">Next</a></li>
+            {% else %}
+                <li class="disabled"><a href="#">Next</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}

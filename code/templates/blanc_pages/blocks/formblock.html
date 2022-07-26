@@ -1,0 +1,12 @@
+<div class="{{ css_classes }}">
+    {% if form %}
+        <form method="POST" action=""{% if has_file_field %} enctype="multipart/form-data"{% endif %}>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Send</button>
+        </form>
+    {% else %}
+        <h3>Inactive form</h3>
+        <p>A recipient and redirect page are required to activate this form.</p>
+    {% endif %}
+</div>

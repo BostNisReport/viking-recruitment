@@ -1,0 +1,27 @@
+{% load filefield %}
+{% load profiles %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            {% for form in formset %}
+                {% if forloop.first %}
+                    {% for field_name in form_section.readonly_fields %}
+                        <th>{{ field_name|verbose_name:form.instance }}:</th>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for form in formset %}
+            <tr>
+                {% for field_name in form_section.readonly_fields %}
+                    <td class="text-left">
+                        {{ field_name|get_form_field:form|link_field|safe|default:"N/A"|default_if_none:"N/A" }}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

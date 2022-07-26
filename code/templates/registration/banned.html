@@ -1,0 +1,15 @@
+{% extends "registration/base.html" %}
+
+
+{% block title %}Banned &mdash; {{ block.super }}{% endblock %}
+
+
+{% block content %}
+<div class="dialog clear">
+<div class="blanc_page_blocktype_contactformblock">
+<h1>IP Address Banned</h1>
+<p>Sorry, your IP address ({{ request.META.REMOTE_ADDR }}) has been banned for abuse.</p>
+<p>If you believe this is in error, please <a href="/contact/">contact us</a>, and quote your IP address - {{ request.META.REMOTE_ADDR }}.</p>
+</div>
+</div>
+{% endblock content %}

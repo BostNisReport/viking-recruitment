@@ -1,0 +1,26 @@
+<table>
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>ID</th>
+            <th>Department</th>
+            <th>Sector</th>
+            <th>Rank</th>
+            <th>Company</th>
+            <th>Vessel</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in page_obj.object_list %}
+            <tr class="{% cycle 'odd' 'even' %}">
+                <td>{{ i.get_job_status_display }}</td>
+                <td><a href="{% url 'recruiter:job-workflow' pk=i.id %}">{{ i.id }}</a></td>
+                <td>{{ i.department }}</td>
+                <td>{{ i.sector }}</td>
+                <td>{{ i.rank }}</td>
+                <td>{{ i.company }}</td>
+                <td>{{ i.vessel|default:"-" }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

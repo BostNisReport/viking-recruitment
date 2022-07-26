@@ -1,0 +1,30 @@
+{% load latest_tweets_tags %}
+
+{% get_latest_tweets limit=2 as latest_tweets %}
+
+
+{% if latest_tweets %}
+    <div class="{{ css_classes }}">
+        <h3><a href="https://twitter.com/VikingRec">Latest Viking Tweets</a></h3>
+        <div class="tweets">
+            <ul class="news">
+                {% for tweet in latest_tweets %}
+                    <li>
+                        <div class="tweet-details">
+                            {% if tweet.retweeted_tweet_id %}
+                                <img src="https://twitter.com/{{ tweet.retweeted_username }}/profile_image?size=normal" alt="">
+                                <a href="{{ tweet.get_absolute_url }}" class="tweet-name">{{ tweet.name }}</a> <a href="{{ tweet.retweeted_user_url }}">@{{ tweet.retweeted_username }}</a>
+                            {% else %}
+                                <img src="https://twitter.com/{{ tweet.user }}/profile_image?size=normal" alt="">
+                                <a href="{{ tweet.get_absolute_url }}" class="tweet-name">{{ tweet.name }}</a> <a href="{{ tweet.user_url }}">@{{ tweet.user }}</a>
+                            {% endif %}
+
+                            <p class="tweet-body">{{ tweet.html|safe }}</p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <a href="https://twitter.com/VikingRec" class="more">View on Twitter</a>
+        </div>
+    </div>
+{% endif %}

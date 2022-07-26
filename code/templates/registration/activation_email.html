@@ -1,0 +1,11 @@
+{% extends "base_email.html" %}
+
+
+{% block title %}REGISTRATION{% endblock %}
+
+
+{% block content %}
+Before you can login, you'll need to visit the following link to activate your account:<br>
+<br>
+<a href="{{ protocol }}://{{ site.domain }}{% url 'registration_activate' pk=new_user.pk activation_key=new_user.activation_key %}">ACTIVATE ACCOUNT</a>
+{% endblock content %}

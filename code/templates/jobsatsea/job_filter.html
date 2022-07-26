@@ -1,0 +1,20 @@
+{% extends "jobsatsea/base_job_list.html" %}
+
+
+{% block job_list %}
+    {% if filter %}
+        <p style="margin:21px;">You can apply directly for any of our current roles by clicking on the blue “apply” button on each of the jobs. These applications will be brought to the attention of our designated consultants who will make contact with you, should you match the criteria.</p>
+
+        <div id="joblist">
+            {% for i in filter %}
+                {% include "jobsatsea/include_job.html" with object=i %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="message">
+            {% if filter.is_bound %}
+                At this time we do not have any suitable roles available that match your criteria, however please do check back with us regularly as we work frequently with new clients and have numerous positions coming through on the regular basis.
+            {% endif %}
+        </p>
+    {% endif %}
+{% endblock job_list %}

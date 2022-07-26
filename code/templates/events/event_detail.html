@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load viking_events thumbnail %}
+
+
+{% block content %}
+<div class="content centre clear">
+    <article class="story">
+        <div class="teamprofile">
+            {% if object.image %}
+                {% thumbnail object.image "625x240" crop as thumb %}
+                <img src="{{ thumb.url }}" style="width:100%;height:auto" alt="{{ object.title }}" />
+            {% endif %}
+
+            <div class="blanc_page_blocktype_redactorblock">
+                <h2><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h2>
+                <h3><a href="{{ object.category.get_absolute_url }}">{{ object.category }}</a><br />
+                {{ object.start|date:"d M Y" }}{% if object.start != object.end %} - {{ object.end|date:"d M Y" }}{% endif %}</h3>
+
+                {{ object.description|safe }}
+            </div>
+        </div>
+    </article>
+
+    <aside class="sideblocks">
+        <div class="blanc_page_blocktype_latestnewspostsblock">
+        <h3><a href="{% url 'blanc_basic_events:event-list' %}">Events Calendar</a></h3>
+        <ul class="news">
+            {% get_upcoming_viking_events 8 as upcoming_events %}
+            {% for event_date, i in upcoming_events|slice:":8" %}
+                <li class="post">
+                    <a href="{{ i.get_absolute_url }}">
+                        {% if i.image %}
+                            {% thumbnail i.image "79x51" crop as thumb %}
+                            <img src="{{ thumb.url }}" alt="{{ i.title }}" width="{{ thumb.width }}" height="{{ thumb.height }}" />
+                        {% endif %}
+
+                        {{ i.title }}
+                        <strong>{{ i.start|date:"d M Y" }}{% if i.start != i.end %} - {{ i.end|date:"d M Y" }}{% endif %}</strong>
+                        <p>{{ i.summary|safe|truncatewords_html:20 }}</p>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'blanc_basic_events:event-list' %}" class="more">More Events</a>
+        </div>
+    </aside>
+</div>
+{% endblock content %}

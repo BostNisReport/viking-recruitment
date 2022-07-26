@@ -1,0 +1,11 @@
+<div class="{{ css_classes }}">
+    {% if object.banner %}
+        <a href="{{ object.banner.link }}">
+            <h3 class="{{ object.banner.header_colour }}">{{ object.banner.title }}</h3>
+            {{ object.banner.content|linebreaks }}
+            <img src="{{ object.banner.image.url }}" alt="{{ object.banner.title }}" />
+        </a>
+    {% else %}
+        <p>Please select a banner.</p>
+    {% endif %}
+</div>

@@ -1,0 +1,41 @@
+{% extends jobsatsea_base_template %}
+
+
+{% block content %}
+    <div class="content centre clear">
+        <div id="jos">
+            <h1>Jobs</h1>
+
+            {% if main_page %}
+                <p style="margin:21px;">Please find a list below of all our current job vacancies. In order to find the most suitable position to suit your experience and the type of role you are looking for, please click on the designated sectors (Yacht, Cruise, Shorebased, Viking Hospitality or Other) or simply type the position you are looking for into the search box.</p>
+            {% endif %}
+
+            <form method="GET" class="filter-job-list" action="{% url 'jobsatsea:job-search' %}">
+                {{ filter.form.as_p }}
+
+                <button type="submit">Search</button>
+            </form>
+
+            <div class="filters">
+                {% for i in job_sectors %}
+                    <div class="filter {% if forloop.first %}first{% endif %}">
+                        <h3{% if i == active_sector %} class="active"{% endif %}><a href="{% url 'jobsatsea:job-search-sector' sector_slug=i.slug %}">{{ i }}</a></h3>
+                        <ul>
+                            {% if i.show_subcategories %}
+                                {% for j in departments %}
+                                    <li{% if i == active_sector and j == active_department %} class="active"{% endif %}><a href="{% url 'jobsatsea:job-search' sector_slug=i.slug department_slug=j.slug %}">{{ j }}</a></li>
+                                {% endfor %}
+                            {% else %}
+                                <li{% if i == active_sector %} class="active"{% endif %}><a href="{% url 'jobsatsea:job-search-sector' sector_slug=i.slug %}">All</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% include "jobsatsea/include_form.html" %}
+
+            {% block job_list %}{% endblock %}
+        </div>
+    </div>
+{% endblock content %}

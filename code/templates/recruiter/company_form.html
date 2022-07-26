@@ -1,0 +1,17 @@
+{% extends 'recruiter/base_recruiter.html' %}
+{% load form_utils %}
+
+
+{% block content %}
+<div id="newform" class="bootform">
+    <h1>Company Details</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        {{ form|render }}
+
+        <button class="more" type="submit">Save</button>
+    </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,199 @@
+{% load static from staticfiles %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Viking Recruitment</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        a {
+            outline: none;
+        }
+        a:hover {
+            text-decoration: none !important;
+        }
+        .button-outlook:hover {
+            opacity: 0.8;
+        }
+        .button-outlook {
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            -ms-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        .no-link a {
+            text-decoration: none !important;
+            color: #fff !important;
+        }
+        .ExternalClass, .ExternalClass a, .ExternalClass span, .ExternalClass b, .ExternalClass br, .ExternalClass p, .ExternalClass div {
+            line-height: inherit;
+        }
+    </style>
+</head>
+<body style="margin:0; padding:0;" bgcolor="#286bac" link="#00aeef">
+<!--[if gte mso 12]>
+    <style>
+        .button-outlook{padding:8px 10px 9px !important;}
+        .button-outlook a{padding:0 !important;}
+    </style>
+<![endif]-->
+<table width="100%" cellspacing="0" cellpadding="0" bgcolor="#286bac">
+    <tr>
+        <td>
+            <table width="551" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="20" style="border-right:1px dotted #fff;"></td>
+                    <td>
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <!-- sidebar -->
+                                <td valign="top" width="169" style="border-right:1px dotted #fff;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="padding:15px 0 0; border-bottom:1px dotted #fff;">
+                                                <a href="http://{{ site.domain }}" target="_blank" style="text-decoration:none;"><img src="http://{{ site.domain }}{% static 'img/email/logo.png' %}" style="vertical-align:top; font:22px/24px Arial, Helvetica, sans-serif; color:#fff;" alt="Viking" width="85" height="50" /></a>
+                                            </td>
+                                        </tr>
+                                        <tr> 
+                                            <td style="padding:68px 10px 0;">
+                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td style="font:bold 16px/18px Arial, Helvetica, sans-serif; color:#fff; padding:0 0 10px;">
+                                                           {% block title %}{% endblock %}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td bgcolor="#ffffff" height="1" style="font-size:0; line-height:0;">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td height="8" style="font-size:0; line-height:0;">&nbsp;</td>
+                                                    </tr>
+                                                    {% block side %}{% endblock %}
+                                                    <tr>
+                                                        <td bgcolor="#ffffff" style="font:bold 10px/12px Arial, Helvetica, sans-serif; color:#fff; padding:0 0 1px;">
+
+                                                        <a href="http://{{ site.domain }}{% url 'profiles:dashboard' %}" target="_blank" style="text-decoration:none; text-align:center; color:#286bac; display:block; padding:8px 10px 9px; width: 120px;">GET IN TOUCH</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td height="8" style="font-size:0; line-height:0;">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td bgcolor="#ffffff" style="font:bold 10px/12px Arial, Helvetica, sans-serif; color:#fff; padding:0 0 1px;">
+
+                                                        <a href="http://{{ site.domain }}{% url 'profiles:dashboard' %}" target="_blank" style="text-decoration:none; text-align:center; color:#286bac; display:block; padding:8px 10px 9px;">CANDIDATE LOGIN</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td height="8" style="font-size:0; line-height:0;">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td bgcolor="#ffffff" height="1" style="font-size:0; line-height:0;">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td height="8" style="font-size:0; line-height:0;">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td height="53"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font:12px/16px Arial, Helvetica, sans-serif; color:#fff; border-top:1px dotted #fff; padding:8px 0 0;">
+                                                            Viking Recruitment Limited <br />
+                                                            Viking House <br />
+                                                            Beechwood Business Park <br />
+                                                            Menzies Road <br />
+                                                            Dover <br />
+                                                            Kent, CT16 2FG <br />
+                                                            United Kingdom
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td height="15" style="font-size:0; line-height:0;">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font:12px/16px Arial, Helvetica, sans-serif; color:#fff;">
+                                                            > <a href="http://{{ site.domain }}" target="_blank" style="text-decoration:underline; color:#00aeef;">Visit our website</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font:12px/16px Arial, Helvetica, sans-serif; color:#fff;">
+                                                            > <a href="mailto:admin@vikingrecruitment.com" target="_blank" style="text-decoration:underline; color:#00aeef;">Email us</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="no-link" style="font:12px/16px Arial, Helvetica, sans-serif; color:#fff;">
+                                                            T: +44 (0) 300 303 8191
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="no-link" style="font:12px/16px Arial, Helvetica, sans-serif; color:#fff;">
+                                                            F: +44 (0) 130 482 7710
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <!-- content -->
+                                <td valign="top" style="padding:0 10px 40px;">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td height="35"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font:italic 22px/24px Arial, Helvetica, sans-serif; color:#00aeef;">
+                                                we place people first
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td height="75"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font:18px/20px Arial, Helvetica, sans-serif; color:#fff;">
+                                                {% block content %}{% endblock %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td height="104"></td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#2f7ab9" align="center" style="padding:40px 10px 0;">
+                                                <img src="http://{{ site.domain }}{% static 'img/email/footer.png' %}" style="vertical-align:top;" alt="" width="277" height="155" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td height="20" style="font-size:0; line-height:0; border-bottom:1px dotted #fff;">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:7px 0 6px; border-bottom:1px dotted #fff;">
+                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td valign="top" width="98" style="font:10px/15px Arial, Helvetica, sans-serif; color:#fff;">
+                                                            <a href="http://www.vikingrecruitment.com/" target="_blank" style="text-decoration:none; color:#fff;">Viking Recruitment</a> <br />
+                                                            <a href="http://www.vikingrecruitment.com/YachtTravel/" target="_blank" style="text-decoration:none; color:#fff;">Viking Marine Travel</a>
+                                                        </td>
+                                                        <td width="12"></td>
+                                                        <td valign="top" width="118" style="font:10px/15px Arial, Helvetica, sans-serif; color:#fff;">
+                                                            <a href="http://www.maritimeskillsacademy.com/" target="_blank" style="text-decoration:none; color:#fff;">Maritime Skills Academy</a> <br />
+                                                            <a href="http://www.chilternmaritime.com/" target="_blank" style="text-decoration:none; color:#fff;">Chiltern Maritime</a>
+                                                        </td>
+                                                        <td width="10"></td>
+                                                        <td valign="top" style="font:10px/15px Arial, Helvetica, sans-serif; color:#fff;">
+                                                            <a href="http://www.vikingrecruitmenthospitality.com/" target="_blank" style="text-decoration:none; color:#fff;">Viking Hospitality</a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="20" style="border-left:1px dotted #fff;"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

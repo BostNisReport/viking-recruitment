@@ -1,0 +1,30 @@
+{% extends "registration/base.html" %}
+
+
+{% block title %}Register &mdash; {{ block.super }}{% endblock %}
+
+
+{% block content %}
+<div class="dialog clear">
+    <form class="blanc_page_blocktype_contactformblock registration-form" method="POST"
+        action="{% url 'registration_register' %}">
+        {% csrf_token %}
+        <h1>Register</h1>
+
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <p class="field_{{ field.html_name }}">
+                <label for="{{ field.auto_id }}">
+                    {{ field.label }} {% if field.field.required %}*{% endif %}
+                </label>
+                {{ field }}
+            </p>
+            {{ field.errors }}
+        {% endfor %}
+
+        <span class="mandatory">* All fields are mandatory</span>
+        <button type="submit">Register</button>
+    </form>
+</div>
+{% endblock content %}

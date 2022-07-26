@@ -1,0 +1,12 @@
+{% load filefield %}
+
+{% block control_group %}
+    <tr>
+        <th class="th-width {% if forloop.counter > 1 %}{% if forloop.last %}{% if new_form %}seperator{% endif %}{% endif %}{% endif %}">
+            {{ field.label|safe }}:
+        </th>
+        <td class="text-left">
+            {{ field|link_field|safe|default:"N/A"|default_if_none:"N/A" }}
+        </td>
+    </tr>
+{% endblock %}

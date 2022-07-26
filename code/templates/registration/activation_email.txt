@@ -1,0 +1,10 @@
+{% autoescape off %}
+Before you can login, you'll need to visit the following link to activate your account:
+
+{{ protocol }}://{{ site.domain }}{% url 'registration_activate' pk=new_user.pk activation_key=new_user.activation_key %}
+
+
+--
+Viking Recruitment
+www.vikingrecruitment.com
+{% endautoescape %}

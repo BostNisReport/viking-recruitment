@@ -1,0 +1,15 @@
+{% extends 'recruiter/base_recruiter.html' %}
+
+
+{% block content %}
+<div id="newform" class="bootform">
+    <h2>Viking Reports</h2>
+
+    <ul>
+        <li><a href="{% url 'reports:applications' %}">Applications</a></li>
+        <li><a href="{% url 'reports:users' %}">Users</a></li>
+        <li><a href="{% url 'reports:candidates' %}">Candidates</a></li>
+        <li><a href="{% url 'reports:jobs' %}">Jobs</a></li>
+    </ul>
+</div>
+{% endblock content %}

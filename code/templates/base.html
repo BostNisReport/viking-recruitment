@@ -1,0 +1,166 @@
+{% load static from staticfiles %}{% load viking_pages jobsatsea_tags %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block starthead %}{% endblock %}
+    <title>{% block title %}Viking Recruitment{% endblock %}</title>
+    <link href='http://fonts.googleapis.com/css?family=Signika:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css/viking.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--[if lt IE 9]>
+        <script src="{% static 'js/html5shiv.js' %}"></script>
+    <![endif]-->
+
+    {% block analytics %}
+    {% if request.get_host == "www.vikingrecruitment.com" %}
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-9958264-1']);
+            _gaq.push(['_trackPageview']);
+            _gaq.push(['b._setAccount', 'UA-44709215-1']);
+            _gaq.push(['b._trackPageview']);
+
+            (function() {
+               var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+               ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    {% endif %}
+    {% endblock analytics %}
+
+    {% block endhead %}{% endblock %}
+</head>
+<body>
+<!--
+   <div style="width: 100%; background-color: red; color: white; text-transform: uppercase; text-align: center;">Test Environment</div>
+-->
+{% block startbody %}{% endblock %}
+<div class="main">
+    <div class="centre clear">
+
+        {% if not user.is_authenticated %}
+          {% include 'profiles/includes/login_registration.html' %}
+        {% endif %}
+
+        <div class="login">
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'profiles:dashboard' %}">My Profile</a> |
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" id="toggle-pulldown">Login / Register</a>
+            {% endif %}
+            {% get_header_links as header_links %}
+            {% if header_links %}
+                {% for i in header_links %}
+                     | <a href="{{ i.link }}">{{ i.title }}</a>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <header class="brand">
+          <h1>
+            <div class="background-right">
+              <a class="dropdown-families" href="#" title="Menu">
+                <div class="arrow-down"></div> The Family of Companies
+              </a>
+                <ul class="dropdown">
+                  <li>
+                    <a target="_blank" href="http://www.maritimeskillsacademy.com/">
+                      <div class="arrow-right"></div>
+                      <span class="dropdown-img maritime-skills">Maritime Skills Academy</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a target="_blank" href="http://www.vikingrecruitmenthospitality.com/">
+                      <div class="arrow-right"></div>
+                      <span class="dropdown-img viking-hospitality">Viking Hospitality</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a target="_blank" href="http://www.chilternmaritime.com/">
+                      <div class="arrow-right"></div>
+                      <span class="dropdown-img chiltern-maritime">Chiltern Maritime</span>
+                    </a>
+                  </li>
+                </ul>
+            </div>
+
+
+            <a class="logo" href="/">Viking <span>we place people first</span></a>
+          </h1>
+
+          <nav id="meganav">
+            <a href="#" id="menutoggle" class="menutoggle">Navigation</a>
+            {% block nav %}
+              {% include "includes/nav.html" only %}
+            {% endblock nav %}
+          </nav>
+        </header>
+
+        {% block content %}{% endblock %}
+
+        <div class="latestjobs clear">
+            <h3>Latest Jobs</h3>
+            <div id="latestjobs_pips" class="tabs"></div>
+            <a href="#" id="latestjobs_prev" class="prev">Previous</a>
+            <a href="#" id="latestjobs_next" class="next">Next</a>
+            <div class="latestjobs_wrapper">
+                <ul id="latestjobs" class="jobs" style="width:872px; height:220px">
+                    {% get_latest_jobs as latest_jobs %}
+                    {% for i in latest_jobs %}
+                        <li class="job">
+                            <span class="when">{{ i.created|date:"M" }}<span class="day">{{ i.created|date:"d" }}</span></span>
+                            <h4>{{ i.rank }}</h4>
+                            <h6>{{ i.id }}</h6>
+                            <p>{{ i.description_text|safe|truncatewords:15 }}</p>
+                            <a href="{{ i.get_absolute_url }}">&gt; More</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="footer clear">
+    <div class="centre">
+        <h3>Did you know?</h3>
+        {% get_footer_images 4 as footer_images %}
+
+        {% for i in footer_images %}
+            <a href="{{ i.link }}" class="banner image {% if forloop.last %}last{% endif %}" style="background-image: url({{ i.image.url }})">
+                <h4 class="alt {{ i.header_colour }}">{{ i.header|linebreaksbr }}</h4>
+                <h4 class="{{ i.subhead_colour }}">{{ i.subhead_text|linebreaksbr }}</h4>
+                <small>{{ i.subheader }}</small>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="legal">
+    <div class="wrapper">
+        {% get_footer_links as footer_links %}
+        <p>
+            {% for i in footer_links %}
+                <a href="{{ i.link }}">{{ i.title }}</a> {% if not forloop.last %}|{% endif %}
+            {% endfor %}
+        </p>
+
+        <div class="social_bar">
+            <a href="https://www.facebook.com/vikingrecruitment/" class="facebook-icon icon" target="_blank"></a>
+            <a href="https://twitter.com/VikingRec" class="twitter-icon icon" target="_blank"></a>
+            <a href="https://www.instagram.com/vikingrec/?hl=en" class="instagram-icon icon" target="_blank"></a>
+            <a href="https://www.linkedin.com/groups/3949939" class="linkedin-icon icon" target="_blank"></a>
+            <a href="https://www.youtube.com/channel/UCsu2LPnAlAf19IMXICB8ssg" class="youtube-icon icon" target="_blank"></a>
+        </div>
+
+    </div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="{% static 'js/viking-min.js' %}"></script>
+{% block endpage %}{% endblock %}
+</body>
+</html>

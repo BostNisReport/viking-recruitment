@@ -1,0 +1,56 @@
+{% extends "blanc_pages/base.html" %}
+{% load static from staticfiles %}
+{% load blancpages homepage_tags %}
+{% load thumbnail %}
+
+{% block content %}
+<div class="heading centre clear">
+    {% get_homepage_banners as homepage_banners %}
+
+    <div id="homepage_carousel" class="scrollable slide">
+        <div class="carousel-inner">
+            {% for i in homepage_banners %}
+                <div class="scrollable_pane item {% if forloop.first %}active{% endif %}">
+                    <a href="{{ i.link }}">
+                        <img src="{{ i.image.url }}" height="{{ i.image_height }}" width="{{ i.image_width }}" alt="{{ i }}" />
+                    </a>
+                    <div class="bottom_text">
+                        <a href="{{ i.link }}"><span>{{ i.coloured_link_text }}</span>{% if i.link_text %} – {{ i.link_text }}{% endif %}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <a class="left carousel-control" href="#" data-target="#homepage_carousel" data-slide="prev"></a>
+        <a class="pause carousel-control" href="#"></a>
+        <a class="right carousel-control" href="#" data-target="#homepage_carousel" data-slide="next"></a>
+    </div>
+
+
+    {% blancpage_render_column blanc_page "Heading" %}
+</div>
+<div class="halves centre clear">
+    <article class="half first">
+        {% blancpage_render_column blanc_page "Main Content" %}
+    </article>
+
+    <aside class="half">
+        {% blancpage_render_column blanc_page "Side" %}
+    </aside>
+</div>
+<div class="thirds centre clear">
+    <div class="third first">
+        {% blancpage_render_column blanc_page "Related 1" %}
+    </div>
+    <div class="third middle">
+        {% blancpage_render_column blanc_page "Related 2" %}
+    </div>
+    <div class="third last">
+        {% blancpage_render_column blanc_page "Related 3" %}
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block endpage %}
+<script src="{% static 'js/jquery.tools.js' %}"></script>
+{% endblock endpage %}

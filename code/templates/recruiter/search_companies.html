@@ -1,0 +1,14 @@
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in page_obj.object_list %}
+            <tr>
+                <td><a href="{% url 'recruiter:company-update' pk=i.id %}">{{ i.name }}</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

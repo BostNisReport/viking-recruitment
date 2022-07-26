@@ -1,0 +1,21 @@
+{% autoescape off %}
+
+Hello {{ user.full_name }},
+
+{% if period == 'year' %}
+{% include 'auth/emails/includes/prompt_update_year.txt' %}
+{% elif period == 'three months' %}
+{% include 'auth/emails/includes/prompt_update_three_months.txt' %}
+{% else %}
+{% include 'auth/emails/includes/prompt_update_week.txt' %}
+{% endif %}
+
+Kind regards,
+
+The Recruitment Team
+
+
+--
+Viking Recruitment
+www.vikingrecruitment.com
+{% endautoescape %}

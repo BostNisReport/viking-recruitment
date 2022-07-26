@@ -1,0 +1,13 @@
+{% autoescape off %}
+{{ message }}
+
+
+To reply to this message, please visit:
+
+{{ protocol }}://{{ site.domain }}{% url 'profiles:dashboard' %}
+
+
+--
+Viking Recruitment
+www.vikingrecruitment.com
+{% endautoescape %}

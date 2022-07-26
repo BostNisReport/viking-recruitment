@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+
+{% block content %}
+<div class="content centre clear">
+    <div class="team">
+        <h2>{{ object.title }}</h2>
+
+        <ul class="team-list">
+            {% for i in object.profile_set.published %}
+                <li>
+                    {% if i.image %}
+                        {% thumbnail i.image 214x123 crop as thumb %}
+                        <img src="{{ thumb.url }}" height="{{ thumb.height }}" width="{{ thumb.width }}" alt="{{ i.name }}" />
+                    {% endif %}
+
+                    <div class="meta">
+                        <a href="mailto:{{ i.email }}">&gt; Email</a>
+
+                        {% if i.visible_profile %}
+                            <a href="{{ i.get_absolute_url }}">&gt; Bio</a>
+                        {% endif %}
+                    </div>
+                    <h3>{{ i.name }}</h3>
+                    <h4>{{ i.company_title }}</h4>
+                    {% if i.company_subtitle %}<small>{{ i.company_subtitle }}</small>{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock content %}

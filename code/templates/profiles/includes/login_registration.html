@@ -1,0 +1,90 @@
+{% load home_page_forms %}
+
+<div id="pulldown" class="pulldown" style="display:none">
+
+    <form class="loginform" method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <h3>Login</h3>
+        <p><label for="id_login_username">Email</label><input id="id_login_username" type="text" name="username" /></p>
+        <p><label for="id_login_password">Password</label><input id="id_login_password" type="password" name="password" /></p>
+        <button type="submit">login</button>
+        <hr />
+        <a href="{% url 'password_reset' %}">Forgotten your password?</a>
+    </form>
+
+    <form class="registerform registration-form" method="POST" action="{% url 'registration_register' %}">
+        {% csrf_token %}
+        <h3>Register</h3>
+
+        {% get_reg_form request as registration_form %}
+
+            <fieldset class="set">
+              <p>
+                <label for="id_register_first_name">
+                  {{ registration_form.first_name.label }}
+                  {% if registration_form.first_name.field.required %}*{% endif %}
+                </label>
+                {{ registration_form.first_name }}
+              </p>
+
+              <p>
+                <label for="id_register_last_name">
+                  {{ registration_form.last_name.label }}
+                  {% if registration_form.last_name.field.required %}*{% endif %}
+                </label>
+                {{ registration_form.last_name }}
+              </p>
+              <p>
+                <label for="id_register_nationality">
+                  {{ registration_form.nationality.label }}
+                  {% if registration_form.nationality.field.required %}*{% endif %}
+                </label>
+                {{ registration_form.nationality }}
+              </p>
+              <span class="mandatory">* All fields are mandatory</span>
+            </fieldset>
+
+            <fieldset class="set">
+              <p>
+                <label for="id_register_latest_position">
+                  {{ registration_form.latest_position.label }}
+                  {% if registration_form.latest_position.field.required %}*{% endif %}
+                </label>
+                {{ registration_form.latest_position }}
+              </p>
+              <p>
+                <label for="id_register_email">
+                  {{ registration_form.email.label }}
+                  {% if registration_form.email.field.required %}*{% endif %}
+                </label>
+                {{ registration_form.email }}
+              </p>
+
+              <p>
+                <label for="id_register_password">
+                  {{ registration_form.password1.label }}
+                  {% if registration_form.password1.field.required %}*{% endif %}
+                </label>
+                {{ registration_form.password1 }}
+              </p>
+
+              <p class="field_website">
+                <label for="id_website">
+                  {{ registration_form.website.label }}
+                </label>
+                {{ registration_form.website }}
+              </p>
+
+              <p class="field_anti_spam">
+                <label for="id_anti_spam">
+                  {{ registration_form.anti_spam.label }}
+                </label>
+                {{ registration_form.anti_spam }}
+              </p>
+            </fieldset>
+
+
+        <button type="submit">register</button>
+    </form>
+
+</div>

@@ -1,0 +1,151 @@
+{% load static from staticfiles %}
+
+
+<div class="box-wrap">
+    <div class="photo box">
+        <img src="{% if profile.photo %}{{ profile.photo.url }}{% else %}{% static 'img/default-profile.jpg' %}{% endif %}" alt="Profile pic" />
+
+        {% if results or recruiter %}
+            Job status: {{ profile.get_status_display }}
+        {% else %}
+            <form id="status_form" action="{% url 'profiles:dashboard' %}?action=status" class="form-horizontal form">
+                {% csrf_token %}
+                {{ status_form.as_p }}
+            </form>
+        {% endif %}
+    </div>
+
+    <div class="summary box">
+
+        <dl>
+            <dt>Name:</dt><dd>{{ profile.get_full_name }}</dd>
+            <dt>D.O.B:</dt><dd>{{ profile.date_of_birth|default:"-" }}</dd>
+            <dt>Nationality:</dt><dd>{{ profile.get_nationality_display|default:"-" }}</dd>
+            <dt>Status:</dt><dd>{{ profile.get_status_display|default:"-" }}</dd>
+        </dl>
+
+        <dl>
+            <dt>Curriculum Vitae:</dt>
+            <dd>
+              {% if profile.curriculumvitae_set.all %}
+                {% for doc in profile.curriculumvitae_set.all %}
+                  <a href="{{ doc.file.url }}">{{ doc.get_filename }}</a><br/>
+                {% endfor %}
+              {% else %}
+                  -
+              {% endif %}
+            </dd>
+            <dt>Email:</dt>
+            <dd>
+                {% if profile.email %}
+                    <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+                {% else %}
+                    -
+                {% endif %}
+            </dd>
+            <dt>Phone:</dt>
+            <dd>{{ profile.telephone|default:"-" }}</dd>
+
+            <dt>Skype:</dt>
+            <dd>{{ profile.skype|default:"-" }}</dd>
+
+            <dt>LinkedIn:</dt>
+            <dd>
+                {% if profile.linkedin %}
+                    <a target="_blank" href="{{ profile.linkedin }}">
+                        {{ profile.linkedin|default:"-" }}
+                    </a>
+                {% else %}
+                    {{ profile.linkedin|default:"-" }}
+                {% endif %}
+            </dd>
+
+            {% for i in profile.previouswork_set.all|slice:":1" %}
+                <dt>Latest Position:</dt>
+                <dd>{{ i.company }}{% if i.rank %} - {{ i.rank }}{% endif %}</dd>
+            {% empty %}
+                <dt>Latest Position:</dt>
+                <dd>-</dd>
+            {% endfor %}
+
+            {% if results or recruiter %}
+                <dt>Managed by:</dt>
+                 <dd>
+                     {% if profile.managed %}
+                         {{ profile.managed_company }}
+                     {% else %}
+                         Independant
+                     {% endif %}
+                 </dd>
+            {% endif %}
+
+            <dt>CoC:</dt>
+            <dd>
+                {% for certificate in profile.competencycertificate_set.all %}
+                    {% if certificate.certificate %}
+                        {{ certificate.certificate }}
+
+                        {% if certificate.issuing_authority %}
+                            ({{ certificate.issuing_authority }})
+                        {% endif %}
+                    {% else %}
+                        -
+                    {% endif %}
+                {% empty %}
+                    -
+                {% endfor %}
+            </dd>
+
+            <dt>Current Location:</dt>
+            <dd>{{ profile.get_current_location_display|default:"-" }}</dd>
+
+        </dl>
+
+        <dl>
+            <dt>Partner:</dt>
+            <dd>{{ profile.partner_name|default:"-" }}</dd>
+            <dt>Partner's Last Position:</dt>
+            <dd>{{ profile.partner_position|default:"-" }}</dd>
+        </dl>
+        {% if not results %}
+            {% if not recruiter %}
+                <a href="{% url 'profiles:profile-home' %}" class="more">Update Profile</a>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="statement box">
+        <strong>Personal Statement:</strong>
+        <p>{{ profile.personal_statement|linebreaksbr|default:"-" }}</p>
+
+        {% if results %}
+            <form method="POST" action="{% url 'recruiter:job-workflow-candidate-update' pk=i.pk %}" class="candidate_update">
+                {% csrf_token %}
+                <input type="hidden" name="candidate" value="{{ i.id }}">
+                <input type="hidden" name="stage" value="{{ i.prev_stage }}">
+                <button type="submit" class="green">&lt;</button>
+            </form>
+        {% endif %}
+
+        <dl>
+            <dt>Last Position{% if profile.previouswork_set.count > 1 %}s{% endif %}:</dt>
+            <dd>
+                {% if profile.previouswork_set.all %}
+                    {% if profile.previouswork_set.count > 1 %}<br>{% endif %}
+
+                    {% for i in profile.previouswork_set.all|slice:":3" %}
+                        {{ i.company }}{% if i.rank %} - {{ i.rank }}{% endif %}<br>
+                    {% endfor %}
+                {% else %}
+                    -
+                {% endif %}
+            </dd>
+
+            {% if recruiter %}
+                <dt>Last Updated:</dt>
+                <dd>{{ profile.updated|timesince }} ago</dd>
+            {% endif %}
+        </dl>
+    </div>
+</div>
+
